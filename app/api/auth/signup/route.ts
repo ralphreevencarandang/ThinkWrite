@@ -8,12 +8,12 @@ export const POST = async (req: NextRequest) =>{
     try {
        // Parse JSON body
         const body = await req.json();
-        const { email, password, name } = body;
+        const { email, password, firstname, lastname } = body;
         const result = await auth.api.signUpEmail({
             body: {
                 email,
                 password,
-                name,
+                name: `${firstname} ${lastname}`
                 // callbackURL: ''
             }
         })

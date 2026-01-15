@@ -109,11 +109,6 @@ model Post {
   @@index([authorId])
    @@index([published, publishedAt]) // Fast lookup of published posts
   @@index([slug]) // Already unique, but explicit index helps
-
-
-
-  
-
 }
 
 
@@ -121,12 +116,9 @@ model Comment {
   id        Int      @id @default(autoincrement())
   postId    String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
   content   String   @db.Text // The actual comment text
-  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt // In case you allow comment editing
 
@@ -138,10 +130,8 @@ model Like {
   id        Int      @id @default(autoincrement())
   postId    String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
   createdAt DateTime @default(now())
 
   @@unique([postId, userId]) // A user can only like a post once
