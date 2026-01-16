@@ -49,20 +49,3 @@ export const signout = async ()=>{
 }
 
 
-export const requireSession = async ()=>{
-    try {
-        
-        const session = await auth.api.getSession({
-            headers: await headers()
-        })
-
-        if(!session){
-            return NextResponse.json({message: "Unauthorized. Authenticatio Required"}, {status: 401})
-        }
-
-        return session;
-    } catch (error) {
-        console.log('Error in getAuthSession: ', error);
-        return NextResponse.json({message: "Internal Server Error"}, {status: 500})
-    }
-}

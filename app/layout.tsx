@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
+
+const poppins = Poppins({
+  subsets: ['latin'],       // required
+  weight: ['400', '500', '600', '700'], // choose weights you need
+  variable: '--font-poppins', // optional, for CSS variable usage
+})
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -14,7 +20,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Think Write",
-  description: "AI Blogging Platform",
+  description: "A modern blogging platform to write, publish, and share ideas with rich content and a clean reading experience.",
 };
 
 export default function RootLayout({
@@ -25,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` ${poppins.className} antialiased bg-dirty`}
       >
         {children}
       </body>
