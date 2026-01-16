@@ -1,10 +1,21 @@
 import { NextResponse, NextRequest } from "next/server"
 import prisma from "@/lib/prisma";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+
 
 export const PUT = async(
     req: NextRequest, 
    { params }: { params: Promise<{ slug: string }> }) =>{
     try {
+
+         const session = await auth.api.getSession({
+            headers: await headers()
+        })
+
+        if(!session){
+            return NextResponse.json({message: "Unauthorized. Authenticatio Required"}, {status: 401})
+        }
 
         const {slug: postSlug} = await params
         console.log("slug from URL:", postSlug);
@@ -59,6 +70,14 @@ export const DELETE = async (
 )=>{
 
     try {
+
+         const session = await auth.api.getSession({
+            headers: await headers()
+        })
+
+        if(!session){
+            return NextResponse.json({message: "Unauthorized. Authenticatio Required"}, {status: 401})
+        }
 
         const {slug} = await params; 
 

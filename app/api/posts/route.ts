@@ -1,9 +1,21 @@
 import { NextResponse, NextRequest } from "next/server"
 import prisma from "@/lib/prisma";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 
 export const POST = async (req: NextRequest)=>{
     try {
+
+        const session = await auth.api.getSession({
+            headers: await headers()
+        })
+
+        if(!session){
+            return NextResponse.json({message: "Unauthorized. Authenticatio Required"}, {status: 401})
+        }
+
+       
 
         const body = await req.json();
         const {authorId, title, slug, excerpt, content, featuredImage, publishedAt} = body;
@@ -40,6 +52,17 @@ export const POST = async (req: NextRequest)=>{
 export const GET = async ()=>{
     try {
 
+        const session = await auth.api.getSession({
+            headers: await headers()
+        })
+
+        if(!session){
+            return NextResponse.json({message: "Unauthorized. Authenticatio Required"}, {status: 401})
+        }
+
+  
+
+
         const posts = await prisma.post.findMany();
 
         if(!posts){
@@ -55,43 +78,3 @@ export const GET = async ()=>{
     }
 }
 
-export const PUT = async(req: NextRequest) =>{
-    try {
-
-        const body = await req.json();
-
-        const {id, authorId, title, slug, excerpt , content, featuredImage, published, publishedAt} = body
-
-        if(!id){
-            return NextResponse.json({message: 'Cannot find post.'}, {status: 404})
-        }
-
-        if(!authorId || !title || !slug || !content){
-            return NextResponse.json({message: 'Missing required fields.'}, {status: 500})
-        }
-
-        const updatePost = await prisma.post.update({
-            where: {slug: slug},
-            data: {
-                title,
-                slug,
-                excerpt,
-                content,
-                featuredImage,
-                published,
-                publishedAt
-            } 
-        })
-
-        if(!updatePost){
-            return NextResponse.json({message: 'Failed to update post'}, {status: 400})
-        }
-        
-        return NextResponse.json({message: 'Update succesfull.' , post: updatePost}, {status: 400})
-
-    } catch (error) {
-        console.log('Error in updating post: ', error);
-        return NextResponse.json({message: 'Internal Server Error'}, {status: 500})
-        
-    }
-}
