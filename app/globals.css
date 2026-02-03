@@ -21,6 +21,10 @@ body {
     .padding-x{
       padding: 0 4% 0 4%;
     } 
+
+    .card {
+      @apply bg-white rounded shadow p-2 flex items-center gap-2 sm:gap-5;
+    }
 }
 
 @layer utilities{

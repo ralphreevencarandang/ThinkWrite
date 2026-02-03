@@ -85,6 +85,7 @@ model Post {
   id String @id @default(cuid())
   authorId String
   author        User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  category String
 
   title String
   slug String @unique

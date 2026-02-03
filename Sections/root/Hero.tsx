@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from './Button'
+import Button from '@/components/root/Button'
 const Hero = () => {
   return (
     <div className='padding-x max-container h-full py-10   sm:flex sm:flex-col sm:justify-center'>
