@@ -1,32 +1,23 @@
 'use client'
+
 import Sidebar from '@/components/admin/Sidebar'
 import Navbar from '@/components/admin/Navbar'
 import { useState } from 'react'
-import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 const Dashboard = () => {
 
-  const [isOpen, setIsOpen] = useState(false)
-
-
-
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   return (
     <section className='w-full relative'>
-        <Navbar fn={ setIsOpen} isOpen={isOpen}/>
+        <Navbar onMenuClick={()=> setIsSidebarOpen(true)} isOpen={isSidebarOpen}/>
 
         <div className='max-container padding-x'>
           <h1>Blog 1</h1>
           
         </div>
 
-      
-          <Sidebar fn={ setIsOpen} isOpen={isOpen}/>
-        
-
-
-
-     
+        <Sidebar onMenuClick={()=>setIsSidebarOpen(false) } isOpen={isSidebarOpen}/>
         
     </section>
   )

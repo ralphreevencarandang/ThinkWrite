@@ -4,25 +4,24 @@ import { Menu, Search, SquarePen } from 'lucide-react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useRef } from 'react'
-import Sidebar from './Sidebar'
+import { NavbarProps } from '@/Types'
 
-const Navbar = () => {
 
-    const openMenu = ()=>{  
-        
-    }
+const Navbar = ({onMenuClick, isOpen} : NavbarProps) => {
+
+   
 
   return (
 
     <nav>
-         <nav className='w-full bg-white  padding-x border-b border-zinc-300'>
+         <div className='w-full bg-white  padding-x border-b border-zinc-300'>
             
             <div className=" flex justify-between items-center py-4 text-sm font-semibold">
 
                 {/* Container 1 */} 
                 <div className='flex items-center gap-5'>
                    
-                    <button className='cursor-pointer' ><Menu  strokeWidth={1}/></button>
+                    <button className='cursor-pointer' onClick={onMenuClick} ><Menu  strokeWidth={1}/></button>
                   
                     <h1 className='text-xl sm:text-2xl font-semibold text-black '>ThinkWrite.</h1>
                     
@@ -52,9 +51,7 @@ const Navbar = () => {
 
             </div>
        
-        </nav>
-
-        <Sidebar/>
+        </div>
 
     </nav>
 

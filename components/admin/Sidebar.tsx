@@ -5,17 +5,37 @@ import React from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useRef } from 'react'
+import { NavbarProps } from '@/Types'
 
-const Sidebar = () => {
+const Sidebar = ({onMenuClick, isOpen} : NavbarProps) => {
 
   const sidebarRef = useRef<HTMLDivElement>(null);
 
 
-    useGSAP(()=>{
-      gsap.set(sidebarRef.current,{
-        autoAlpha: 0,
-      })
-    }, [])
+     // Initial setup (runs once)
+  useGSAP(() => {
+    if (!sidebarRef.current) return
+
+    gsap.set(sidebarRef.current, {
+      x: -300,
+      display: 'none',
+
+    })
+  }, [])
+
+  // Animate on state change
+  useGSAP(() => {
+    if (!sidebarRef.current) return
+
+    gsap.to(sidebarRef.current, {
+      x: isOpen ? 0 : -300,
+  
+      display: isOpen ? 'block':'none',
+      duration: 0.4,
+      ease: 'power1.inOut',
+      opacity: 1
+    })
+  }, [isOpen])
 
     
 
@@ -27,7 +47,7 @@ const Sidebar = () => {
         <div>
 
           <div className='flex gap-4 items-center'>
-            <button >
+            <button onClick={onMenuClick}>
               <Menu strokeWidth={1} />
             </button>
             <p className='text-xl font-semibold'>ThinkWrite.</p>
