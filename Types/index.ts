@@ -1,3 +1,11 @@
 export type NavbarProps = {
-  onMenuClick: () => void
+  onMobileMenuClick: () => void
+  onDesktopMenuClick?: () => void
+  // isOpen: boolean
+}
+
+export type SidebarProps = {
+  onMobileMenuClick: () => void
+  onDesktopMenuClick?: () => void
+  isOpen: boolean
 }

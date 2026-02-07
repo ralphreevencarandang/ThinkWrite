@@ -7,7 +7,7 @@ import { useRef } from 'react'
 import { NavbarProps } from '@/Types'
 
 
-const Navbar = ({onMenuClick, isOpen} : NavbarProps) => {
+const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
 
    
 
@@ -21,7 +21,10 @@ const Navbar = ({onMenuClick, isOpen} : NavbarProps) => {
                 {/* Container 1 */} 
                 <div className='flex items-center gap-5'>
                    
-                    <button className='cursor-pointer' onClick={onMenuClick} ><Menu  strokeWidth={1}/></button>
+                   {/*  Mobile Menu*/}
+                    <button className='cursor-pointer xl:hidden' onClick={onMobileMenuClick} ><Menu  strokeWidth={1}/></button>
+                    {/* Desktop Menu */}
+                    <button className='cursor-pointer hidden xl:block' onClick={onDesktopMenuClick}><Menu  strokeWidth={1}/></button>
                   
                     <h1 className='text-xl sm:text-2xl font-semibold text-black '>ThinkWrite.</h1>
                     

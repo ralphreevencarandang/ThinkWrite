@@ -1,41 +1,40 @@
 'use client'
 
 import { Menu } from 'lucide-react'
-import React from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useRef } from 'react'
-import { NavbarProps } from '@/Types'
+import { SidebarProps } from '@/Types'
 
-const Sidebar = ({onMenuClick, isOpen} : NavbarProps) => {
+const Sidebar = ({onMobileMenuClick, isOpen} : SidebarProps) => {
 
   const sidebarRef = useRef<HTMLDivElement>(null);
 
 
      // Initial setup (runs once)
-  useGSAP(() => {
-    if (!sidebarRef.current) return
+    useGSAP(() => {
+      if (!sidebarRef.current) return
 
-    gsap.set(sidebarRef.current, {
-      x: -300,
-      display: 'none',
+      gsap.set(sidebarRef.current, {
+        x: -300,
+        display: 'none',
 
-    })
-  }, [])
+      })
+    }, [])
 
-  // Animate on state change
-  useGSAP(() => {
-    if (!sidebarRef.current) return
+    // Animate on state change
+    useGSAP(() => {
+      if (!sidebarRef.current) return
 
-    gsap.to(sidebarRef.current, {
-      x: isOpen ? 0 : -300,
-  
-      display: isOpen ? 'block':'none',
-      duration: 0.4,
-      ease: 'power1.inOut',
-      opacity: 1
-    })
-  }, [isOpen])
+      gsap.to(sidebarRef.current, {
+        x: isOpen ? 0 : -300,
+    
+        display: isOpen ? 'block':'none',
+        duration: 0.4,
+        ease: 'power1.inOut',
+        opacity: 1
+      })
+    }, [isOpen])
 
     
 
@@ -47,7 +46,7 @@ const Sidebar = ({onMenuClick, isOpen} : NavbarProps) => {
         <div>
 
           <div className='flex gap-4 items-center'>
-            <button onClick={onMenuClick}>
+            <button onClick={onMobileMenuClick} className='cursor-pointer'>
               <Menu strokeWidth={1} />
             </button>
             <p className='text-xl font-semibold'>ThinkWrite.</p>

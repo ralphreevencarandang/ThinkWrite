@@ -4,20 +4,33 @@ import Sidebar from '@/components/admin/Sidebar'
 import Navbar from '@/components/admin/Navbar'
 import { useState } from 'react'
 import { useGSAP } from '@gsap/react'
+import DesktopSidebar from '@/components/admin/DesktopSidebar'
 const Dashboard = () => {
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
+  // Menu in Mobile
+  const [isMobileMenu, setMobileMenu] = useState(false)
+
+  // Should open in desktop
+  const [isDesktopMenu, setDesktopMenu] = useState(true)
 
   return (
     <section className='w-full relative'>
-        <Navbar onMenuClick={()=> setIsSidebarOpen(true)} isOpen={isSidebarOpen}/>
 
-        <div className='max-container padding-x'>
-          <h1>Blog 1</h1>
+        <Navbar onMobileMenuClick={()=> setMobileMenu(true)} onDesktopMenuClick={()=> setDesktopMenu(!isDesktopMenu)}/>
+
+        <div className='flex '>
+          <DesktopSidebar isDesktopMenu={isDesktopMenu}/>
+
+
+          <div className='bg-blue-200 w-full'>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, est.</p>
+          </div>
+          
           
         </div>
 
-        <Sidebar onMenuClick={()=>setIsSidebarOpen(false) } isOpen={isSidebarOpen}/>
+        <Sidebar onMobileMenuClick={()=>setMobileMenu(false) } isOpen={isMobileMenu}/>
         
     </section>
   )
