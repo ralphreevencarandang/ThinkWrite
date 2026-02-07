@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
-
+import Footer from "@/sections/root/Footer";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -31,9 +31,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={` ${poppins.className} antialiased bg-dirty `}
+        className={` ${poppins.className} antialiased bg-dirty text-zinc-700`}
       >
-        {children}
+
+        <div className="flex flex-col min-h-screen">
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer/>
+
+        </div>
+       
       </body>
     </html>
   );

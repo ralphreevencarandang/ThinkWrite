@@ -1,14 +1,13 @@
 import React from 'react'
 import Navbar from "@/components/root/Navbar";
-import Footer from "@/Sections/root/Footer";
-import Hero from "@/Sections/root/Hero";
+import Footer from "@/sections/root/Footer";
+import Hero from "@/sections/root/Hero";
 
 const LandingPage = () => {
   return (
-    <div className='flex flex-col h-screen'>
+    <div className=''>
         <Navbar/>
         <Hero/>
-        <Footer/>
     </div>
   )
 }

@@ -23,7 +23,7 @@ const Dashboard = () => {
           <DesktopSidebar isDesktopMenu={isDesktopMenu}/>
 
 
-          <div className='bg-blue-200 w-full'>
+          <div className=' w-full p-10'>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, est.</p>
           </div>
           

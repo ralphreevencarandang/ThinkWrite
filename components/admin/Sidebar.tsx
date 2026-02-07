@@ -1,6 +1,6 @@
 'use client'
-
-import { Menu } from 'lucide-react'
+import Link from 'next/link'
+import { Bookmark, House, Menu, NotepadText, Settings } from 'lucide-react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useRef } from 'react'
@@ -45,11 +45,37 @@ const Sidebar = ({onMobileMenuClick, isOpen} : SidebarProps) => {
 
         <div>
 
-          <div className='flex gap-4 items-center'>
-            <button onClick={onMobileMenuClick} className='cursor-pointer'>
-              <Menu strokeWidth={1} />
-            </button>
-            <p className='text-xl font-semibold'>ThinkWrite.</p>
+          <div className='space-y-10'>
+
+            <div className='flex gap-4'>
+                <button onClick={onMobileMenuClick} className='cursor-pointer'>
+                <Menu strokeWidth={1} />  
+              </button>
+
+              <Link href={''} className='text-black text-lg '>ThinkWrite.</Link>
+
+
+            </div>
+        
+            <div>
+
+              <ul className='space-y-5'>
+                <li>
+                  <Link href={''} className='flex gap-2 items-center hover:text-black transition-all'> <House  strokeWidth={1} />Home</Link>
+                </li>
+                <li>
+                  <Link href={''} className='flex gap-2 items-center hover:text-black transition-all'> <Bookmark  strokeWidth={1} />Like</Link>
+                </li>
+                <li>
+                  <Link href={''} className='flex gap-2 items-center hover:text-black transition-all'> <NotepadText  strokeWidth={1} />Stories</Link>
+                </li>
+                <li>
+                  <Link href={''} className='flex gap-2 items-center hover:text-black transition-all'> <Settings  strokeWidth={1} />Settings</Link>
+                </li>
+            
+
+              </ul>
+            </div>
           </div>
 
         </div>

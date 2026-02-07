@@ -13,20 +13,21 @@ const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
 
   return (
 
-    <nav>
+    <header>
          <div className='w-full bg-white  padding-x border-b border-zinc-300'>
             
-            <div className=" flex justify-between items-center py-4 text-sm font-semibold">
+            <nav className=" flex justify-between items-center py-4 text-sm font-semibold">
 
                 {/* Container 1 */} 
                 <div className='flex items-center gap-5'>
                    
                    {/*  Mobile Menu*/}
-                    <button className='cursor-pointer xl:hidden' onClick={onMobileMenuClick} ><Menu  strokeWidth={1}/></button>
+                    <button className='cursor-pointer xl:hidden' onClick={onMobileMenuClick} ><Menu  strokeWidth={1} className=' hover:text-black transition-all'/></button>
                     {/* Desktop Menu */}
-                    <button className='cursor-pointer hidden xl:block' onClick={onDesktopMenuClick}><Menu  strokeWidth={1}/></button>
+                    <button className='cursor-pointer hidden xl:block' onClick={onDesktopMenuClick}><Menu  strokeWidth={1} className=' hover:text-black transition-all'/></button>
                   
-                    <h1 className='text-xl sm:text-2xl font-semibold text-black '>ThinkWrite.</h1>
+                    <Link href={''} className='text-xl sm:text-2xl font-semibold text-black'>ThinkWrite.</Link>
+            
                     
                     <div className='bg-stone-100 p-2 rounded-full sm:flex sm:items-center  gap-2 hidden '>
                         
@@ -40,7 +41,7 @@ const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
                     
                     <button className='cursor-pointer hidden sm:block'>
 
-                        <SquarePen strokeWidth={1}/>
+                        <SquarePen strokeWidth={1} className='hover:text-black transition-all'/>
                     </button>
 
                      <button className='sm:hidden'>
@@ -52,11 +53,11 @@ const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
                     </div>
                 </div>
 
-            </div>
+            </nav>
        
         </div>
 
-    </nav>
+    </header>
 
         
 
