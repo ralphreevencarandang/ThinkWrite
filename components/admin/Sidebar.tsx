@@ -52,7 +52,7 @@ const Sidebar = ({onMobileMenuClick, isOpen} : SidebarProps) => {
                 <Menu strokeWidth={1} />  
               </button>
 
-              <Link href={''} className='text-black text-lg '>ThinkWrite.</Link>
+              <Link href={''} className='text-black text-lg   '>ThinkWrite.</Link>
 
 
             </div>

@@ -13,7 +13,7 @@ const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
 
   return (
 
-    <header>
+    <header className='sticky top-0 z-10'>
          <div className='w-full bg-white  padding-x border-b border-zinc-300'>
             
             <nav className=" flex justify-between items-center py-4 text-sm font-semibold">
@@ -26,7 +26,7 @@ const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
                     {/* Desktop Menu */}
                     <button className='cursor-pointer hidden xl:block' onClick={onDesktopMenuClick}><Menu  strokeWidth={1} className=' hover:text-black transition-all'/></button>
                   
-                    <Link href={''} className='text-xl sm:text-2xl font-semibold text-black'>ThinkWrite.</Link>
+                    <Link href={'/'} className='text-xl sm:text-2xl font-semibold text-black'>ThinkWrite.</Link>
             
                     
                     <div className='bg-stone-100 p-2 rounded-full sm:flex sm:items-center  gap-2 hidden '>

@@ -34,13 +34,10 @@ export default function RootLayout({
         className={` ${poppins.className} antialiased bg-dirty text-zinc-700`}
       >
 
-        <div className="flex flex-col min-h-screen">
-          <main className="flex-1">
+      
+      
             {children}
-          </main>
-          <Footer/>
-
-        </div>
+   
        
       </body>
     </html>
