@@ -12,23 +12,12 @@ import { useEffect } from 'react'
 const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
 
     const menuRef = useRef<HTMLDivElement>(null);
-  const backdropRef = useRef<HTMLDivElement>(null);
+    const backdropRef = useRef<HTMLDivElement>(null);
 
 
 
     const [isSettingOpen, setIsSettingOpen] = useState(false);
 
-
-    
-    useEffect(() => {
-        if (isSettingOpen) {
-        document.body.style.overflow = 'hidden';
-        } else {
-        document.body.style.overflow = 'unset';
-        }
-        // Cleanup on unmount
-        return () => { document.body.style.overflow = 'unset'; };
-    }, [isSettingOpen]);
 
 
       // Initial setup
@@ -67,10 +56,10 @@ const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
    <div
         ref={backdropRef}
         onClick={()=> setIsSettingOpen(false)} // Closes when clicking outside
-        className="fixed inset-0  z-40 "
+        className="fixed inset-0  z-6 "
       />
 
-    <header className='sticky top-0 z-5'>
+    <header className='sticky top-0 z-7'>
          <div className='w-full bg-white  padding-x border-b border-zinc-300'>
             
             <nav className=" flex justify-between items-center py-4 text-sm font-semibold">
@@ -114,7 +103,7 @@ const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
                             </button>
                         </div>
 
-                        <div ref={menuRef} className=' w-50 absolute right-0 top-12 border border-zinc-300 bg-white shadow opacity-0 px-4 py-6 space-y-5 rounded' >
+                        <div ref={menuRef} className=' w-50 absolute right-0 top-12 border border-zinc-300 bg-white shadow opacity-0 px-4 py-6 space-y-5 rounded ' >
 
                                 <div className='flex items-center gap-2'>
                                     <div className='w-15 h-15 rounded-full'>
@@ -127,7 +116,7 @@ const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
                                     </div>
                                 </div>
 
-                                <div className='font-normal space-y-4'>
+                                <div className='font-normal space-y-4 '>
                                     <Link href={''} className='flex items-center gap-2 hover:text-black xl:hidden'>
                                         <SquarePen strokeWidth={1}/>
                                         <p>Write</p>
@@ -137,7 +126,7 @@ const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
                                         <Settings strokeWidth={1}/>
                                         <p>Settings</p>
                                     </Link>
-                                     <Link href={''} className='flex items-center gap-2 hover:text-black'>
+                                     <Link href={''} className='flex items-center gap-2 hover:text-black '>
                                         <LogOut strokeWidth={1}/>
                                         <p>Logout</p>
                                     </Link>

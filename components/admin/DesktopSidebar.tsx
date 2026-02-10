@@ -12,9 +12,9 @@ const DesktopSidebar = ( {isDesktopMenu} : {isDesktopMenu : boolean}) => {
     useGSAP(()=>{
         if(!desktopSidebarRef.current) return
 
-        let tl = gsap.timeline();
+        
 
-        tl.to(desktopSidebarRef.current, {
+        gsap.to(desktopSidebarRef.current, {
                 x: isDesktopMenu ? 0 : -300,
                 duration: 0.8,
                 ease: "back.inOut",
@@ -25,27 +25,28 @@ const DesktopSidebar = ( {isDesktopMenu} : {isDesktopMenu : boolean}) => {
 
     },[isDesktopMenu])
   return (
-        <div  ref={desktopSidebarRef} className=' w-3xs hidden xl:block border-r border-zinc-300 padding-x py-10 sticky top-[72.8px] h-[calc(100vh-72px)]
- overflow-y-auto'>
+        <div  ref={desktopSidebarRef} className=' w-3xs hidden xl:block border-r border-zinc-300 padding-x py-10 sticky top-[72.8px] h-[calc(100vh-72.8px)]
+       '>
+
             <ul className='space-y-5'>
               <li>
-                <Link href={''} className='flex gap-2 items-center hover:text-black transition-all'> <House  strokeWidth={1} />Home</Link>
+                <Link href={''} className='flex gap-2 items-center hover:text-black '> <House  strokeWidth={1} />Home</Link>
+              </li>
+       
+
+        
+              <li>
+                <Link href={''} className='flex gap-2 items-center hover:text-black '> <Bookmark  strokeWidth={1} />Like</Link>
+              </li>
+              <li>
+                <Link href={''} className='flex gap-2 items-center hover:text-black '> <NotepadText  strokeWidth={1} />Stories</Link>
               </li>
 
               <li>
-                <Link href={''} className='flex gap-2 items-center hover:text-black transition-all'> <Bookmark  strokeWidth={1} />Like</Link>
+                <Link href={''} className='flex gap-2 items-center hover:text-black '> <Settings  strokeWidth={1}  />Settings</Link>
               </li>
-
-              <li>
-                <Link href={''} className='flex gap-2 items-center hover:text-black transition-all'> <NotepadText  strokeWidth={1} />Stories</Link>
-              </li>
-
-              <li>
-                <Link href={''} className='flex gap-2 items-center hover:text-black transition-all'> <Settings  strokeWidth={1} />Settings</Link>
-              </li>
-           
-
             </ul>
+
           </div>
   )
 }

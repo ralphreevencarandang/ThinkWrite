@@ -35,18 +35,7 @@ const Dashboard = () => {
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, est.</p>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, est.</p>
 
-            <div className='bg-red-300 h-70'>
-
-            </div>
-            <div className='bg-red-300 h-70'>
-
-            </div>
-            <div className='bg-red-300 h-70'>
-
-            </div>
-            <div className='bg-red-300 h-70'>
-
-            </div>
+           
           </div>
           
           
