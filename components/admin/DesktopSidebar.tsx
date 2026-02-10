@@ -25,7 +25,7 @@ const DesktopSidebar = ( {isDesktopMenu} : {isDesktopMenu : boolean}) => {
 
     },[isDesktopMenu])
   return (
-        <div  ref={desktopSidebarRef} className=' w-3xs hidden xl:block border-r border-gray-400 padding-x py-10 sticky top-[72.8px] h-[calc(100vh-72px)]
+        <div  ref={desktopSidebarRef} className=' w-3xs hidden xl:block border-r border-zinc-300 padding-x py-10 sticky top-[72.8px] h-[calc(100vh-72px)]
  overflow-y-auto'>
             <ul className='space-y-5'>
               <li>
