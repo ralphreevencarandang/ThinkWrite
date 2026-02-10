@@ -12,13 +12,12 @@ export const POST = async (req: NextRequest)=>{
         })
 
         if(!session){
-            return NextResponse.json({message: "Unauthorized. Authenticatio Required"}, {status: 401})
+            return NextResponse.json({message: "Unauthorized. Authentication Required"}, {status: 401})
         }
 
-       
 
         const body = await req.json();
-        const {authorId, title, slug, excerpt, content, featuredImage, publishedAt} = body;
+        const {authorId, title, slug, excerpt, content, featuredImage, publishedAt, category} = body;
 
         if(!authorId || !title || !slug || !content ){
             return NextResponse.json({message: 'Missing required fields.'} , {status: 400})
@@ -32,6 +31,7 @@ export const POST = async (req: NextRequest)=>{
                  excerpt,
                  content,
                  featuredImage,
+                 category,
                  publishedAt
             }
         })

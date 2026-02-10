@@ -5,10 +5,11 @@ import Hero from "@/sections/root/Hero";
 
 const LandingPage = () => {
   return (
-    <div className=''>
+    <main className='flex flex-col min-h-screen'>
         <Navbar/>
         <Hero/>
-    </div>
+        <Footer/>
+    </main>
   )
 }
 

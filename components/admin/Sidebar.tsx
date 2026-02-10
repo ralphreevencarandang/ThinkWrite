@@ -41,7 +41,7 @@ const Sidebar = ({onMobileMenuClick, isOpen} : SidebarProps) => {
 
   
   return (
-    <nav ref={sidebarRef} className='h-screen bg-white px-7 py-8 border-r border-zinc-300 absolute top-0 opacity-0  '>
+    <nav ref={sidebarRef} className='h-screen bg-white px-7 py-8 border-r border-zinc-300 absolute top-0 opacity-0  z-10'>
 
         <div>
 
@@ -52,7 +52,7 @@ const Sidebar = ({onMobileMenuClick, isOpen} : SidebarProps) => {
                 <Menu strokeWidth={1} />  
               </button>
 
-              <Link href={''} className='text-black text-lg '>ThinkWrite.</Link>
+              <Link href={''} className='text-black text-lg   '>ThinkWrite.</Link>
 
 
             </div>

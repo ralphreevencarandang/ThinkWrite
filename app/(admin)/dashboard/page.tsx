@@ -19,12 +19,33 @@ const Dashboard = () => {
 
         <Navbar onMobileMenuClick={()=> setMobileMenu(true)} onDesktopMenuClick={()=> setDesktopMenu(!isDesktopMenu)}/>
 
-        <div className='flex '>
+        <div className='flex relative'>
           <DesktopSidebar isDesktopMenu={isDesktopMenu}/>
 
 
-          <div className=' w-full p-10'>
+          <div className=' w-full p-10 h-full'>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, est.</p>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, est.</p>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, est.</p>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, est.</p>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, est.</p>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, est.</p>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, est.</p>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, est.</p>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, est.</p>
+
+            <div className='bg-red-300 h-70'>
+
+            </div>
+            <div className='bg-red-300 h-70'>
+
+            </div>
+            <div className='bg-red-300 h-70'>
+
+            </div>
+            <div className='bg-red-300 h-70'>
+
+            </div>
           </div>
           
           
