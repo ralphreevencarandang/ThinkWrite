@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { Menu, Search, SquarePen } from 'lucide-react'
+import { LogOut, Menu, Search, Settings, SquarePen } from 'lucide-react'
 import { NavbarProps } from '@/Types'
 import Image from 'next/image'
 import { profilePlaceholder } from '@/public/images'
@@ -8,12 +8,34 @@ import { useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useRef } from 'react'
-
+import { useEffect } from 'react'
 const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
 
-    const menuRef = useRef(null);
+    const menuRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+
+
 
     const [isSettingOpen, setIsSettingOpen] = useState(false);
+
+
+    
+    useEffect(() => {
+        if (isSettingOpen) {
+        document.body.style.overflow = 'hidden';
+        } else {
+        document.body.style.overflow = 'unset';
+        }
+        // Cleanup on unmount
+        return () => { document.body.style.overflow = 'unset'; };
+    }, [isSettingOpen]);
+
+
+      // Initial setup
+    useGSAP(() => {
+        gsap.set(backdropRef.current, { opacity: 0, display: 'none' });
+    }, []);
+
 
     useGSAP(()=>{
 
@@ -28,11 +50,25 @@ const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
             ease: "power1.inOut"
         })
 
+         // Backdrop Animation
+            gsap.to(backdropRef.current, {
+            opacity: isSettingOpen ? 1 : 0,
+            display: isSettingOpen ? 'block' : 'none',
+            duration: 0.3,
+            });
+
     }, [isSettingOpen])
 
    
 
   return (
+<>
+
+   <div
+        ref={backdropRef}
+        onClick={()=> setIsSettingOpen(false)} // Closes when clicking outside
+        className="fixed inset-0  z-40 "
+      />
 
     <header className='sticky top-0 z-5'>
          <div className='w-full bg-white  padding-x border-b border-zinc-300'>
@@ -73,14 +109,40 @@ const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
 
                     <div className='relative'>
                         <div className='rounded-full w-10 h-10 '>
-                            <button className='cursor-pointer' onClick={()=>setIsSettingOpen(!isSettingOpen)}>
-                                    <Image src={profilePlaceholder } alt="Profile Image"/>
+                            <button className='cursor-pointer ' onClick={()=>setIsSettingOpen(!isSettingOpen)}>
+                                    <Image src={profilePlaceholder } alt="Profile Image" className='object-contain'/>
                             </button>
                         </div>
 
-                        <div ref={menuRef} className=' h-55 w-50 absolute right-0 top-12 border border-zinc-300 bg-white shadow opacity-0' >
+                        <div ref={menuRef} className=' w-50 absolute right-0 top-12 border border-zinc-300 bg-white shadow opacity-0 px-4 py-6 space-y-5 rounded' >
 
-                          
+                                <div className='flex items-center gap-2'>
+                                    <div className='w-15 h-15 rounded-full'>
+                                        <Image src={profilePlaceholder} alt='profile-image' className='object-contain'></Image>
+                                    </div>
+
+                                    <div>
+                                        <p className='text-sm font-medium'>Azazel</p>
+                                        <Link href={''} className='text-xs font-light hover:text-black'>View Profile</Link>
+                                    </div>
+                                </div>
+
+                                <div className='font-normal space-y-4'>
+                                    <Link href={''} className='flex items-center gap-2 hover:text-black xl:hidden'>
+                                        <SquarePen strokeWidth={1}/>
+                                        <p>Write</p>
+                                    </Link>
+
+                                    <Link href={''} className='flex items-center gap-2 hover:text-black'>
+                                        <Settings strokeWidth={1}/>
+                                        <p>Settings</p>
+                                    </Link>
+                                     <Link href={''} className='flex items-center gap-2 hover:text-black'>
+                                        <LogOut strokeWidth={1}/>
+                                        <p>Logout</p>
+                                    </Link>
+                                </div>
+
                         </div>
 
                     </div>
@@ -95,7 +157,7 @@ const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
 
         
 
-
+</>
 
   )
 }

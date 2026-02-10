@@ -1,7 +1,8 @@
 import React from 'react'
 import Navbar from "@/components/root/Navbar";
-import Footer from "@/sections/root/Footer";
-import Hero from "@/sections/root/Hero";
+
+import Hero from '@/Sections/root/Hero';
+import Footer from '@/Sections/root/Footer';
 
 const LandingPage = () => {
   return (

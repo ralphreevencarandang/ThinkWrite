@@ -1,10 +1,11 @@
 'use client'
 
-import Sidebar from '@/components/admin/Sidebar'
+
 import Navbar from '@/components/admin/Navbar'
 import { useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import DesktopSidebar from '@/components/admin/DesktopSidebar'
+import MobileSidebar from '@/components/admin/MobileSidebar'
 const Dashboard = () => {
 
 
@@ -51,7 +52,7 @@ const Dashboard = () => {
           
         </div>
 
-        <Sidebar onMobileMenuClick={()=>setMobileMenu(false) } isOpen={isMobileMenu}/>
+        <MobileSidebar onMobileMenuClick={()=>setMobileMenu(false) } isOpen={isMobileMenu}/>
         
     </section>
   )
