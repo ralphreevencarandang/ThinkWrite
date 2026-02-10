@@ -31,12 +31,15 @@ const DesktopSidebar = ( {isDesktopMenu} : {isDesktopMenu : boolean}) => {
               <li>
                 <Link href={''} className='flex gap-2 items-center hover:text-black transition-all'> <House  strokeWidth={1} />Home</Link>
               </li>
+
               <li>
                 <Link href={''} className='flex gap-2 items-center hover:text-black transition-all'> <Bookmark  strokeWidth={1} />Like</Link>
               </li>
+
               <li>
                 <Link href={''} className='flex gap-2 items-center hover:text-black transition-all'> <NotepadText  strokeWidth={1} />Stories</Link>
               </li>
+
               <li>
                 <Link href={''} className='flex gap-2 items-center hover:text-black transition-all'> <Settings  strokeWidth={1} />Settings</Link>
               </li>

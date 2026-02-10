@@ -21,7 +21,7 @@ export const PUT = async(
         console.log("slug from URL:", postSlug);
         const body = await req.json();
 
-        const {id, authorId, title, slug, excerpt , content, featuredImage, published, publishedAt} = body
+        const {id, authorId, title, slug, excerpt , content, featuredImage, published, publishedAt, category} = body
 
         const postExist = await prisma.post.findFirst({
             where: {
@@ -47,7 +47,8 @@ export const PUT = async(
                 content,
                 featuredImage,
                 published,
-                publishedAt
+                publishedAt,
+                category
             } 
         })
 

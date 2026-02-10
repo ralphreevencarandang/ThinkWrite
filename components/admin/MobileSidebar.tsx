@@ -34,6 +34,7 @@ const MobileSidebar = ({ onMobileMenuClick, isOpen }: SidebarProps) => {
       x: isOpen ? 0 : -300,
       duration: 0.4,
       ease: 'power2.out',
+      opacity: isOpen ? 1 : 0
     });
 
     // Backdrop Animation
@@ -41,6 +42,7 @@ const MobileSidebar = ({ onMobileMenuClick, isOpen }: SidebarProps) => {
       opacity: isOpen ? 1 : 0,
       display: isOpen ? 'block' : 'none',
       duration: 0.3,
+      
     });
   }, [isOpen]);
 
@@ -50,13 +52,13 @@ const MobileSidebar = ({ onMobileMenuClick, isOpen }: SidebarProps) => {
       <div
         ref={backdropRef}
         onClick={onMobileMenuClick} // Closes when clicking outside
-        className="fixed inset-0 bg-black/10 z-40 "
+        className="fixed inset-0 bg-black/10 z-40 opacity-0"
       />
 
       {/* 4. THE SIDEBAR */}
       <nav
         ref={sidebarRef}
-        className="fixed top-0 left-0 min-h-screen  bg-white px-7 py-8 border-r border-zinc-300 z-50 shadow-xl"
+        className="fixed top-0 left-0 min-h-screen  bg-white px-7 py-8 border-r border-zinc-300 z-50 shadow-xl opacity-0"
       >
         <div className="space-y-10">
           <div className="flex gap-4">
