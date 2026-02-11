@@ -5,12 +5,12 @@ import React, { use, useState } from 'react';
 import SigninForm from './SigninForm';
 import OAuthButton from './OAuthButton';
 import { facebookIcon, githubIcon,googleIcon } from '@/public/icons';
-import Link from 'next/link';
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
-
+import SignupForm from './SignupForm';
 const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSignin, setIsSignIn] = useState(true);
   const modalRef = useRef<HTMLDivElement>(null)
 
     useGSAP(()=> {
@@ -70,9 +70,12 @@ const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) =>
 
 
                         <div className='space-y-6'>
-                            <SigninForm/>
-                         
-                            {/* DIVIDER */}
+                            {isSignin ? <SigninForm/> : <SignupForm/>}
+                            
+                            {isSignin ? 
+
+                            <>
+                             {/* DIVIDER */}
                             <div className='flex items-center gap-4'>
                                 <div className='bg-zinc-400 w-full h-px'></div>
                                 <span>or</span>
@@ -85,11 +88,23 @@ const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) =>
                                 <OAuthButton label='Sign in with Facebook' icon={facebookIcon}/>
                             </div>
 
-                            <div className='text-center font-normal text-xs'>
-                               
-                                Need an account?
-                                <span> <Link href='' className='underline hover:text-blue-400'> Sign up</Link></span>
-                            </div>
+
+                           
+                            
+                            </>
+                            
+                            
+                            
+                            : ''}
+
+                             <p className='text-center font-normal text-xs'>
+                                {isSignin ? 'Need an account?' : 'Already have an account?'}
+                                  
+                                <span className='ml-1 underline hover:text-blue-400 cursor-pointer' onClick={()=> setIsSignIn( isSignin ? false : true)}> 
+                                    {isSignin ? 'Sign up' : 'Sign in'}
+                                     
+                                </span>
+                            </p>
                         </div>
                     </div>
                 </div>
