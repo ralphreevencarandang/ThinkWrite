@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 import React, { use, useState } from 'react';
 import SigninForm from './forms/SigninForm';
 import OAuthButton from './forms/OAuthButton';
-import { facebookIcon, githubIcon,googleIcon } from '@/public/icons';
+import { facebookIcon, githubIcon,googleIcon } from '@/assets/icons';
 import Link from 'next/link';
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';

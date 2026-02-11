@@ -34,3 +34,26 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+## Folder Structure (Best Practice)
+
+This project now follows a `src/`-first structure to keep app routes, shared UI, and business logic cleanly separated.
+
+```text
+src/
+  app/                # App Router pages, layouts, API routes
+  components/         # Reusable UI components grouped by domain
+  sections/           # Page sections/composition blocks
+  lib/                # Auth, db client, utilities, server actions
+  types/              # Shared TypeScript types/interfaces
+  constants/          # Shared constants
+  assets/             # Importable static assets (icons/images)
+public/               # Public static files served by URL
+```
+
+### Why this is better
+- Keeps all application source code in one place (`src`).
+- Reduces top-level clutter and improves discoverability.
+- Uses consistent lowercase directory naming (`types`, `sections`, `constants`).
+- Separates app code (`src/assets`) from direct public URL assets (`public/`).
