@@ -1,12 +1,9 @@
 import Image from "next/image";
-import LandingPage from "./(root)/landing/page";
+import PublicClient from "./(public)/PublicClient";
 export default function Home() {
   return (
-    <section className="">
-
-      <LandingPage/>
-
-
+    <section>
+      <PublicClient/>
     </section>
   );
 }

@@ -1,12 +1,12 @@
 'use client'
 
 
-import Navbar from '@/components/admin/Navbar'
+import Navbar from '@/components/navigation/ProtectedNavbar'
 import { useState } from 'react'
 import { useGSAP } from '@gsap/react'
-import DesktopSidebar from '@/components/admin/DesktopSidebar'
-import MobileSidebar from '@/components/admin/MobileSidebar'
-const Dashboard = () => {
+import DesktopSidebar from '@/components/navigation/DesktopSidebar'
+import MobileSidebar from '@/components/navigation/MobileSidebar'
+const ProtectedClient = () => {
 
 
   // Menu in Mobile
@@ -47,4 +47,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default ProtectedClient

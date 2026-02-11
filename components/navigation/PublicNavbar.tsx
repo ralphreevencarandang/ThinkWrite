@@ -2,8 +2,8 @@
 
 import React from 'react'
 import Link from 'next/link'
-import AuthModal from './AuthModal'
-const Navbar = () => {
+import AuthModal from '../forms/AuthModal'
+const PublicNavbar = () => {
   return (
     <header className='w-full bg-dirty  padding-x border-b border-zinc-300'>
         <div className="max-container flex justify-between items-center py-4 text-sm font-semibold">
@@ -26,4 +26,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default PublicNavbar

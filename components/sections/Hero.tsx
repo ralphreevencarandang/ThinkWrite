@@ -1,6 +1,6 @@
 import React from 'react'
-import Button from '@/components/root/Button'
-import SimpleModal from '@/components/root/Modal';
+import Button from '@/components/ui/Button'
+
 const Hero = () => {
   return (
     <section className='padding-x max-container h-full py-10 flex items-center  sm:flex sm:flex-col sm:justify-center flex-1'>

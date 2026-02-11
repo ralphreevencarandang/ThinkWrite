@@ -9,7 +9,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useRef } from 'react'
 import { useEffect } from 'react'
-const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
+const ProtectedNavbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
 
     const menuRef = useRef<HTMLDivElement>(null);
     const backdropRef = useRef<HTMLDivElement>(null);
@@ -151,4 +151,4 @@ const Navbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
   )
 }
 
-export default Navbar
+export default ProtectedNavbar

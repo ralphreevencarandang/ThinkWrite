@@ -2,8 +2,8 @@
 import gsap from 'gsap';
 import { X } from 'lucide-react';
 import React, { use, useState } from 'react';
-import SigninForm from './forms/SigninForm';
-import OAuthButton from './forms/OAuthButton';
+import SigninForm from './SigninForm';
+import OAuthButton from './OAuthButton';
 import { facebookIcon, githubIcon,googleIcon } from '@/public/icons';
 import Link from 'next/link';
 import { useRef } from 'react';
@@ -14,6 +14,8 @@ const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) =>
   const modalRef = useRef<HTMLDivElement>(null)
 
     useGSAP(()=> {
+
+        if(!modalRef.current) return
 
         gsap.set(modalRef.current, {
             opacity: 0,
