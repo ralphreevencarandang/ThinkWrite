@@ -18,7 +18,8 @@ export const auth = betterAuth({
     google: {
         clientId: '',
         clientSecret: ''
-    }
+    },
+    
    },
    plugins: [nextCookies()]
 })

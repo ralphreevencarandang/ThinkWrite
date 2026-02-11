@@ -1,9 +1,35 @@
-"use client";
+// "use client";
+import gsap from 'gsap';
 import { X } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
+import SigninForm from './forms/SigninForm';
+import OAuthButton from './forms/OAuthButton';
+import { facebookIcon, githubIcon,googleIcon } from '@/public/icons';
+import Link from 'next/link';
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
 
 const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null)
+
+    useGSAP(()=> {
+
+        gsap.set(modalRef.current, {
+            opacity: 0,
+            scale: 0.5,
+            autoAlpha: 0
+        })
+        gsap.to(modalRef.current, {
+            autoAlpha: isOpen ? 1 : 0,
+        
+
+            scale: isOpen ? 1 : 0.5,
+            ease: 'power1.inOut',
+            duration: 0.3
+        })
+    }, [isOpen])
+
 
   return (
     <div>
@@ -21,11 +47,13 @@ const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) =>
                     <div 
                         className="bg-white p-8 rounded-lg relative w-full max-w-md shadow-2xl"
                         onClick={(e) => e.stopPropagation()} 
+                        ref={modalRef}
                     >
-                    
+                        
+                        {/* ABSOLUTE CLOSE BUTTON */}
                         <button 
                         onClick={() => setIsOpen(false)} 
-                        className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"
+                        className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors cursor-pointer"
                         >
                         <X strokeWidth={1.5} size={24} />
                         </button>
@@ -40,53 +68,27 @@ const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) =>
 
 
                         <div className='space-y-6'>
-
-                            <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
-
-                                <div className="flex flex-col space-y-1">
-                                    <label className="text-sm font-medium">Email:</label>
-                                    <input 
-                                    type="email" 
-                                    placeholder="Enter your email"
-                                    className="border border-zinc-400 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-zinc-700 transition-all"
-                                    />
-                                </div>
-
-                                <div className="flex flex-col space-y-1">
-                                    <label className="text-sm font-medium">Password:</label>
-                                    <input 
-                                    type="password" 
-                                    placeholder="Enter your email"
-                                    className="border border-zinc-400 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-zinc-700 transition-all"
-                                    />
-                                </div>
-
-                                
-                            
-                                <button className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800">
-                                    Sign In
-                                </button>
-                            </form>
-
-
-
+                            <SigninForm/>
+                         
                             {/* DIVIDER */}
                             <div className='flex items-center gap-4'>
                                 <div className='bg-zinc-400 w-full h-px'></div>
-
                                 <span>or</span>
                                 <div className='bg-zinc-400 w-full h-px'></div>
                             </div>
 
-                            <div>
-
-                                <button className='border w-full py-2 rounded font-normal'>Sign in with Google</button>
+                            <div className='space-y-2'>
+                                <OAuthButton label='Sign in with Google' icon={googleIcon}/>
+                                <OAuthButton label='Sign in with Github' icon={githubIcon}/>
+                                <OAuthButton label='Sign in with Facebook' icon={facebookIcon}/>
                             </div>
 
-
+                            <div className='text-center font-normal text-xs'>
+                               
+                                Need an account?
+                                <span> <Link href='' className='underline hover:text-blue-400'> Sign up</Link></span>
+                            </div>
                         </div>
-
-                     
                     </div>
                 </div>
             )}
