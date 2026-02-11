@@ -1,4 +1,4 @@
-// "use client";
+
 import gsap from 'gsap';
 import { X } from 'lucide-react';
 import React, { use, useState } from 'react';
@@ -8,10 +8,12 @@ import { facebookIcon, githubIcon,googleIcon } from '@/public/icons';
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import SignupForm from './SignupForm';
+
 const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isSignin, setIsSignIn] = useState(true);
-  const modalRef = useRef<HTMLDivElement>(null)
+
+    const [isOpen, setIsOpen] = useState(false);
+    const [isSignin, setIsSignIn] = useState(true);
+    const modalRef = useRef<HTMLDivElement>(null)
 
     useGSAP(()=> {
 
@@ -62,7 +64,7 @@ const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) =>
 
                     
                         <div className="text-center space-y-2 mb-6 font-normal">
-                            <h2 className="text-2xl font-semibold text-gray-800">Login your account</h2>
+                            <h2 className="text-2xl font-semibold text-gray-800">{isSignin ? 'Login your account' : 'Sign Up'}</h2>
                             <p className="text-xs text-gray-500">
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates, beatae!
                             </p>

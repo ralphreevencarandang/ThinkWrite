@@ -1,15 +1,19 @@
 'use client'
 import Link from 'next/link'
 import { LogOut, Menu, Search, Settings, SquarePen } from 'lucide-react'
-import { NavbarProps } from '@/Types'
+import { NavbarProps } from '@/types'
 import Image from 'next/image'
 import { profilePlaceholder } from '@/public/images'
 import { useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useRef } from 'react'
-import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { signout } from '@/lib/actions/auth-actions'
+
 const ProtectedNavbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
+
+    const router = useRouter();
 
     const menuRef = useRef<HTMLDivElement>(null);
     const backdropRef = useRef<HTMLDivElement>(null);
@@ -17,6 +21,18 @@ const ProtectedNavbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) 
 
 
     const [isSettingOpen, setIsSettingOpen] = useState(false);
+
+    const handleSignout = async ()=>{
+        try {
+
+            const result = await signout();
+
+            router.refresh();
+            
+        } catch (error) {
+            console.log('Error in signout function: ', error)
+        }
+    }
 
 
 
@@ -126,10 +142,12 @@ const ProtectedNavbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) 
                                         <Settings strokeWidth={1}/>
                                         <p>Settings</p>
                                     </Link>
-                                     <Link href={''} className='flex items-center gap-2 hover:text-black '>
+
+                                    <button className='flex items-center gap-2 hover:text-black cursor-pointer' onClick={handleSignout}>
                                         <LogOut strokeWidth={1}/>
                                         <p>Logout</p>
-                                    </Link>
+                                    </button>
+                                   
                                 </div>
 
                         </div>

@@ -4,7 +4,7 @@ import { Bookmark, House, Menu, NotepadText, Settings } from 'lucide-react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useRef, useEffect } from 'react'
-import { SidebarProps } from '@/Types'
+import { SidebarProps } from '@/types'
 
 const MobileSidebar = ({ onMobileMenuClick, isOpen }: SidebarProps) => {
   const sidebarRef = useRef<HTMLDivElement>(null);

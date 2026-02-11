@@ -1,3 +1,5 @@
+'use server'
+
 import { headers } from "next/headers";
 import { auth } from "../auth";
 import { NextResponse } from "next/server";
@@ -43,9 +45,16 @@ export const signup = async (email:string, password:string, name:string)=>{
 
 
 export const signout = async ()=>{
-    await auth.api.signOut({
+
+    try {
+         await auth.api.signOut({
         headers: await headers()
     })
+    } catch (error) {
+        console.log('Error in signout action: ', error);
+        
+    }
+   
 }
 
 

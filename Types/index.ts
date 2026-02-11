@@ -1,3 +1,5 @@
+import { auth } from "@/lib/auth"
+
 export type NavbarProps = {
   onMobileMenuClick: () => void
   onDesktopMenuClick?: () => void
@@ -9,3 +11,4 @@ export type SidebarProps = {
   onDesktopMenuClick?: () => void
   isOpen: boolean
 }
+export type Session = typeof auth.$Infer.Session
