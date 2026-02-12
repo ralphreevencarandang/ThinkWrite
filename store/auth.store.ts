@@ -1,7 +1,17 @@
 import {create} from 'zustand'
 import { Session } from '@/types'
 
-export const useAuthStore = create((set)=>({
+type AuthStore = {
+  session: Session | null;
+  setSession: (sess: Session) => void;
+
+  isSignin: boolean;
+  setIsSignin: (value: boolean) => void;
+};
+
+export const useAuthStore = create<AuthStore>((set)=>({
     session: null,
-    setSession: (sess : Session) => set({session: sess})
+    setSession: (sess : Session) => set({session: sess}),
+    isSignin: true,
+    setIsSignin: (value: boolean)=> set({isSignin: value})
 }))

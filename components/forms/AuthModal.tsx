@@ -8,12 +8,13 @@ import { facebookIcon, githubIcon,googleIcon } from '@/public/icons';
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import SignupForm from './SignupForm';
+import { useAuthStore } from '@/store/auth.store';
 
 const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) => {
 
     const [isOpen, setIsOpen] = useState(false);
-    const [isSignin, setIsSignIn] = useState(true);
     const modalRef = useRef<HTMLDivElement>(null)
+    const {setIsSignin, isSignin} = useAuthStore();
 
     useGSAP(()=> {
 
@@ -77,32 +78,27 @@ const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) =>
                             {isSignin ? 
 
                             <>
-                             {/* DIVIDER */}
-                            <div className='flex items-center gap-4'>
-                                <div className='bg-zinc-400 w-full h-px'></div>
-                                <span>or</span>
-                                <div className='bg-zinc-400 w-full h-px'></div>
-                            </div>
+                                {/* DIVIDER */}
+                                <div className='flex items-center gap-4'>
+                                    <div className='bg-zinc-400 w-full h-px'></div>
+                                    <span>or</span>
+                                    <div className='bg-zinc-400 w-full h-px'></div>
+                                </div>
 
-                            <div className='space-y-2'>
-                                <OAuthButton label='Sign in with Google' icon={googleIcon}/>
-                                <OAuthButton label='Sign in with Github' icon={githubIcon}/>
-                                <OAuthButton label='Sign in with Facebook' icon={facebookIcon}/>
-                            </div>
+                                <div className='space-y-2'>
+                                    <OAuthButton label='Sign in with Google' icon={googleIcon}/>
+                                    <OAuthButton label='Sign in with Github' icon={githubIcon}/>
+                                    <OAuthButton label='Sign in with Facebook' icon={facebookIcon}/>
+                                </div>
 
-
-                           
-                            
                             </>
-                            
-                            
-                            
+
                             : ''}
 
                              <p className='text-center font-normal text-xs'>
                                 {isSignin ? 'Need an account?' : 'Already have an account?'}
                                   
-                                <span className='ml-1 underline hover:text-blue-400 cursor-pointer' onClick={()=> setIsSignIn( isSignin ? false : true)}> 
+                                <span className='ml-1 underline hover:text-blue-400 cursor-pointer' onClick={()=> setIsSignin( isSignin ? false : true)}> 
                                     {isSignin ? 'Sign up' : 'Sign in'}
                                      
                                 </span>
