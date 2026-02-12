@@ -1,7 +1,7 @@
 
 import gsap from 'gsap';
 import { X } from 'lucide-react';
-import React, { use, useState } from 'react';
+import  {  useState } from 'react';
 import SigninForm from './SigninForm';
 import OAuthButton from './OAuthButton';
 import { facebookIcon, githubIcon,googleIcon } from '@/public/icons';
@@ -9,8 +9,12 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import SignupForm from './SignupForm';
 import { useAuthStore } from '@/store/auth.store';
+import { signinSocial } from '@/lib/actions/auth-actions';
+import { useRouter } from 'next/navigation';
 
 const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) => {
+
+    const router = useRouter();
 
     const [isOpen, setIsOpen] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null)
@@ -35,6 +39,24 @@ const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) =>
         })
     }, [isOpen])
 
+    const handleSocialAuth = async (provider : "google" | "github" | "facebook")=>{
+        try {
+             const url = await signinSocial(provider);
+
+              if (url) {
+                // Full-page redirect
+                window.location.href = url;
+                }
+
+     
+
+            
+        } catch (error) {
+            console.log('Error in handle Social Auth: ', error);
+        }
+
+    }
+
 
   return (
     <div>
@@ -50,7 +72,7 @@ const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) =>
                 >
                     {/* MODAL BOX: stopPropagation prevents closing when clicking inside */}
                     <div 
-                        className="bg-white p-8 rounded-lg relative w-full max-w-md shadow-2xl"
+                        className="bg-white p-8 rounded-lg relative w-full max-w-md shadow-2xl text-sm font-normal"
                         onClick={(e) => e.stopPropagation()} 
                         ref={modalRef}
                     >
@@ -86,9 +108,9 @@ const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) =>
                                 </div>
 
                                 <div className='space-y-2'>
-                                    <OAuthButton label='Sign in with Google' icon={googleIcon}/>
-                                    <OAuthButton label='Sign in with Github' icon={githubIcon}/>
-                                    <OAuthButton label='Sign in with Facebook' icon={facebookIcon}/>
+                                    <OAuthButton label='Sign in with Google' icon={googleIcon} onClick={()=> handleSocialAuth('google')}/>
+                                    <OAuthButton label='Sign in with Github' icon={githubIcon} onClick={()=> handleSocialAuth('github')}/>
+                                    
                                 </div>
 
                             </>

@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { auth } from "../auth";
 import { NextResponse } from "next/server";
+import { redirect } from "next/navigation";
 
 
 export const signin = async (email: string, password: string)=>{
@@ -58,3 +59,25 @@ export const signout = async ()=>{
 }
 
 
+
+export const signinSocial = async (provider : 'github' | 'google' | 'facebook')=>{
+    try {
+
+        const {url} = await auth.api.signInSocial({
+            body: {
+                provider: provider,
+                callbackURL: '/'
+
+            }
+        });
+
+   
+        return url; // just return it
+
+            
+        
+    } catch (error) {
+        console.log('Error in sign in social server action: ', error);
+        
+    }
+}
