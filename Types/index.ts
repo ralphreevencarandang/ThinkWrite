@@ -14,16 +14,3 @@ export type SidebarProps = {
 export type Session = typeof auth.$Infer.Session
 
 
-export type SigninFormFields = {
-  email: string;
-  password: string
-}
-
-
-export type SignupFormFields = {
-  email: string;
-  firstname: string;
-  lastname: string;
-  password: string
-}
-

@@ -26,46 +26,41 @@ export const signin = async (email: string, password: string)=>{
             }
         })
 
-        if(!result){
-            throw new Error('Invalid username or password')
-        }
+        return {success: true, data: result}
+
         
-        return result;
-        
-    } catch (error) {
+    } catch (error: any) {
         console.log('Error in signin actions: ', error);
+        return {  success: false,  message: error.message}
+
     }
 }
 
 
-export const signup = async (email:string, password:string, name:string)=>{
+export const signup = async (email:string, password:string, firstname:string, lastname: string,confirmPassword: string)=>{
     try {
 
-        if(!email){
-            throw new Error("Email cannot be empty.")
-        }
-      
-         if(!name ){
-            throw new Error("Name cannot be empty.")
-        }
-
-           if(!password ){
-            throw new Error("Password cannot be empty.")
-        }
+        if (!email) throw new Error("Email cannot be empty.")
+        if (!firstname) throw new Error("Firstname cannot be empty.")
+        if (!lastname) throw new Error("Lastname cannot be empty.")
+        if (!password) throw new Error("Password cannot be empty.")
+        if (password !== confirmPassword) throw new Error("Passwords do not match.")
         
         const result = await auth.api.signUpEmail({
             body:{
                 email,
                 password,
-                name
+                name: `${firstname}-${lastname}`
             }
         })
+
+        return {success: true, data: result}
         
 
-        return result
-    } catch (error) {
+ 
+    } catch (error: any) {
         console.log('Error in signup actions: ', error);
-        
+        return { success: false, message: error.message  } 
     }
 }
 
@@ -76,9 +71,15 @@ export const signout = async ()=>{
          await auth.api.signOut({
         headers: await headers()
     })
-    } catch (error) {
+
+    
+    } catch (error:any) {
         console.log('Error in signout action: ', error);
-        
+
+        return {  success: false,  message: error.message}
+      
+     
+     
     }
    
 }
@@ -100,8 +101,10 @@ export const signinSocial = async (provider : 'github' | 'google' | 'facebook')=
 
             
         
-    } catch (error) {
+    } catch (error: any) {
         console.log('Error in sign in social server action: ', error);
+     
+
         
     }
 }

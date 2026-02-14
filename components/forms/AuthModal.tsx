@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { X } from 'lucide-react';
 import  {  useState } from 'react';
 import SigninForm from './SigninForm';
-import OAuthButton from './OAuthButton';
+import OAuthButton from './form-elements/OAuthButton';
 import { facebookIcon, githubIcon,googleIcon } from '@/public/icons';
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';

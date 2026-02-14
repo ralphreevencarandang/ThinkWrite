@@ -37,7 +37,7 @@ export default function RootLayout({
       >
 
             {children}
-            <Toaster/>
+            <Toaster containerClassName="text-xs"/>
    
        
       </body>

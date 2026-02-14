@@ -29,11 +29,13 @@ const SigninForm =  () => {
             try {
          
                 const result = await signin(data.email, data.password);
-                if(!result?.user){
-                    // console.log('Invalid email or password');
-                    toast.error('Invalid email or password')
+
+                if(!result || !result.success){
+                    
+                    toast.error(result.message);
                     return
                 }
+               
 
                 toast.success("Signed in successfully");
 
