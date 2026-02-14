@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth"
-
+import * as z from 'zod'
 export type NavbarProps = {
   onMobileMenuClick: () => void
   onDesktopMenuClick?: () => void
@@ -12,3 +12,18 @@ export type SidebarProps = {
   isOpen: boolean
 }
 export type Session = typeof auth.$Infer.Session
+
+
+export type SigninFormFields = {
+  email: string;
+  password: string
+}
+
+
+export type SignupFormFields = {
+  email: string;
+  firstname: string;
+  lastname: string;
+  password: string
+}
+

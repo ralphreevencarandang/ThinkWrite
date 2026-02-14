@@ -9,6 +9,14 @@ import { redirect } from "next/navigation";
 export const signin = async (email: string, password: string)=>{
     try {
 
+        if(!email ){
+            throw new Error("Email cannot be empty.")
+        }
+        if(!password ){
+            throw new Error("Password cannot be empty.")
+        }
+
+
         const result = await auth.api.signInEmail({
             body: {
                 email,
@@ -17,6 +25,10 @@ export const signin = async (email: string, password: string)=>{
                 callbackURL: '/'
             }
         })
+
+        if(!result){
+            throw new Error('Invalid username or password')
+        }
         
         return result;
         
@@ -28,6 +40,18 @@ export const signin = async (email: string, password: string)=>{
 
 export const signup = async (email:string, password:string, name:string)=>{
     try {
+
+        if(!email){
+            throw new Error("Email cannot be empty.")
+        }
+      
+         if(!name ){
+            throw new Error("Name cannot be empty.")
+        }
+
+           if(!password ){
+            throw new Error("Password cannot be empty.")
+        }
         
         const result = await auth.api.signUpEmail({
             body:{
@@ -36,6 +60,7 @@ export const signup = async (email:string, password:string, name:string)=>{
                 name
             }
         })
+        
 
         return result
     } catch (error) {
@@ -67,7 +92,6 @@ export const signinSocial = async (provider : 'github' | 'google' | 'facebook')=
             body: {
                 provider: provider,
                 callbackURL: '/'
-
             }
         });
 
