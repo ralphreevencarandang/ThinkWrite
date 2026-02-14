@@ -14,7 +14,7 @@ export const POST = async (req: NextRequest) =>{
             body: {
                 email,
                 password,
-                name: `${firstname}-${lastname}`,
+                name: `${firstname} ${lastname}`,
                 //   callbackURL: "/dashboard"
             }
         })

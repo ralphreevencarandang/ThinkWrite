@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import Providers from "@/providers/Providers";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 
 const geistSans = Geist({
@@ -25,6 +28,8 @@ export const metadata: Metadata = {
   description: "A modern blogging platform to write, publish, and share ideas with rich content and a clean reading experience.",
 };
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -36,7 +41,9 @@ export default function RootLayout({
         className={` ${poppins.className} antialiased bg-dirty text-zinc-700 font-normal`}
       >
 
-            {children}
+            <Providers>
+              {children}
+            </Providers>
             <Toaster containerClassName="text-xs"/>
    
        
