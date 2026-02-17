@@ -10,15 +10,17 @@ import gsap from 'gsap'
 import { useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { signout } from '@/lib/actions/auth-actions'
+import { useAuthStore } from '@/store/auth.store'
 
 
-const ProtectedNavbar = ({onMobileMenuClick, onDesktopMenuClick, user} : NavbarProps) => {
+const ProtectedNavbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
 
 
     const router = useRouter();
     const menuRef = useRef<HTMLDivElement>(null);
     const backdropRef = useRef<HTMLDivElement>(null);
     const [isSettingOpen, setIsSettingOpen] = useState(false);
+    const {session} = useAuthStore();
 
     const handleSignout = async ()=>{
         try {
@@ -113,7 +115,7 @@ const ProtectedNavbar = ({onMobileMenuClick, onDesktopMenuClick, user} : NavbarP
                     <div className='relative'>
                         <div className='rounded-full '>
                             <button className='cursor-pointer ' onClick={()=>setIsSettingOpen(!isSettingOpen)}>
-                                    <Image src={ user.image || profilePlaceholder } width={35} height={35} alt="Profile Image" className='object-contain rounded-full'/>
+                                    <Image src={ session?.user.image || profilePlaceholder } width={35} height={35} alt="Profile Image" className='object-contain rounded-full'/>
                             </button>
                         </div>
 
@@ -121,11 +123,11 @@ const ProtectedNavbar = ({onMobileMenuClick, onDesktopMenuClick, user} : NavbarP
 
                                 <div className='flex items-center gap-2'>
                                     <div className=' '>
-                                        <Image src={ user.image || profilePlaceholder } width={40} height={40} alt='profile-image' className='object-contain rounded-full'></Image>
+                                        <Image src={ session?.user.image || profilePlaceholder } width={40} height={40} alt='profile-image' className='object-contain rounded-full'></Image>
                                     </div>
 
                                     <div>
-                                        <p className='text-sm font-medium'>{user.name.split(' ')[0]}</p>
+                                        <p className='text-sm font-medium'>{session?.user.name.split(' ')[0] || 'Author'}</p>
                                         <Link href={''} className='text-xs font-light hover:text-black'>View Profile</Link>
                                     </div>
                                 </div>

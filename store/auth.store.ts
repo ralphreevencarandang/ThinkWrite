@@ -3,7 +3,7 @@ import { Session } from '@/types'
 
 type AuthStore = {
   session: Session | null;
-  setSession: (sess: Session) => void;
+  setSession: (sess: Session | null) => void;
 
   isSignin: boolean;
   setIsSignin: (value: boolean) => void;
@@ -11,7 +11,7 @@ type AuthStore = {
 
 export const useAuthStore = create<AuthStore>((set)=>({
     session: null,
-    setSession: (sess : Session) => set({session: sess}),
+    setSession: (sess) => set({ session: sess }),
     isSignin: true,
     setIsSignin: (value: boolean)=> set({isSignin: value})
 }))

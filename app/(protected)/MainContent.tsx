@@ -2,19 +2,24 @@ import React from 'react'
 import Image from 'next/image'
 import { postImg, profilePlaceholder } from '@/public/images'
 import { MessageCircle, ThumbsUp } from 'lucide-react'
+import { useAuthStore } from '@/store/auth.store'
+
 
 const MainContent = () => {
+
+    const {session} = useAuthStore();
+
   return (
     <article className='max-w-3xl mx-auto'>
-           {/* <p>{session.user.name}</p> */}
+          
             
 
               <div className=' space-y-5 border-b border-zinc-400 py-4'>
 
                     <div className='flex flex-nowrap items-center gap-2'>
 
-                        <Image src={profilePlaceholder} alt='profile-img' className='rounded-full w-10 object-contain'/>
-                        <p className='text-sm'>Author</p>
+                        <Image src={session?.user.image || profilePlaceholder} alt='profile-img' width={30} height={30} className='rounded-full  object-contain'/>
+                        <p className='text-sm'>{session?.user.name || 'asd'}</p>
                         
                     </div>
 

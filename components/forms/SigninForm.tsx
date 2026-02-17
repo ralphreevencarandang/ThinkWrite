@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import {useForm} from 'react-hook-form'
 import { signinSchema } from '@/validations/client/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-
+import { useAuthStore } from '@/store/auth.store';
 
 
 type SigninFormFields = z.infer<typeof signinSchema>
@@ -16,6 +16,7 @@ type SigninFormFields = z.infer<typeof signinSchema>
 
 const SigninForm =  () => {
         const router = useRouter();
+        const {setSession} = useAuthStore();
 
 
         const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm<SigninFormFields>({
@@ -35,6 +36,11 @@ const SigninForm =  () => {
                     toast.error(result.message);
                     return
                 }
+
+                // setSession(result.data);
+
+                console.log('Result: ', result.data?.user);
+                
                
 
                 toast.success("Signed in successfully");

@@ -17,7 +17,6 @@ export type User = {
 export type NavbarProps = {
   onMobileMenuClick: () => void
   onDesktopMenuClick?: () => void
-  user: User
 
 
 }

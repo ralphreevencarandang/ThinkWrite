@@ -5,10 +5,10 @@ import ProtectedNavbar from '@/components/navigation/ProtectedNavbar'
 import { useState } from 'react'
 import DesktopSidebar from '@/components/navigation/DesktopSidebar'
 import MobileSidebar from '@/components/navigation/MobileSidebar'
-import { Session } from '@/types'
+
 import MainContent from './MainContent'
 
-const ProtectedClient = ({session} : {session:Session }) => {
+const ProtectedClient = () => {
 
 
  
@@ -22,7 +22,7 @@ const ProtectedClient = ({session} : {session:Session }) => {
   return (
     <section className='w-full relative'>
 
-        <ProtectedNavbar user={session.user} onMobileMenuClick={()=> setMobileMenu(true)} onDesktopMenuClick={()=> setDesktopMenu(!isDesktopMenu)}/>
+        <ProtectedNavbar  onMobileMenuClick={()=> setMobileMenu(true)} onDesktopMenuClick={()=> setDesktopMenu(!isDesktopMenu)}/>
 
         <div className='flex relative'>
           <DesktopSidebar isDesktopMenu={isDesktopMenu}/>
