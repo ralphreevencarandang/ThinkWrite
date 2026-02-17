@@ -10,17 +10,17 @@ import gsap from 'gsap'
 import { useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { signout } from '@/lib/actions/auth-actions'
+import { useAuthStore } from '@/store/auth.store'
+
 
 const ProtectedNavbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) => {
 
-    const router = useRouter();
 
+    const router = useRouter();
     const menuRef = useRef<HTMLDivElement>(null);
     const backdropRef = useRef<HTMLDivElement>(null);
-
-
-
     const [isSettingOpen, setIsSettingOpen] = useState(false);
+    const {session} = useAuthStore();
 
     const handleSignout = async ()=>{
         try {
@@ -113,21 +113,21 @@ const ProtectedNavbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) 
                     {/* Profile Icon */}
 
                     <div className='relative'>
-                        <div className='rounded-full w-10 h-10 '>
+                        <div className='rounded-full '>
                             <button className='cursor-pointer ' onClick={()=>setIsSettingOpen(!isSettingOpen)}>
-                                    <Image src={profilePlaceholder } alt="Profile Image" className='object-contain'/>
+                                    <Image src={ session?.user.image || profilePlaceholder } width={35} height={35} alt="Profile Image" className='object-contain rounded-full'/>
                             </button>
                         </div>
 
                         <div ref={menuRef} className=' w-50 absolute right-0 top-12 border border-zinc-300 bg-white shadow opacity-0 px-4 py-6 space-y-5 rounded ' >
 
                                 <div className='flex items-center gap-2'>
-                                    <div className='w-15 h-15 rounded-full'>
-                                        <Image src={profilePlaceholder} alt='profile-image' className='object-contain'></Image>
+                                    <div className=' '>
+                                        <Image src={ session?.user.image || profilePlaceholder } width={40} height={40} alt='profile-image' className='object-contain rounded-full'></Image>
                                     </div>
 
                                     <div>
-                                        <p className='text-sm font-medium'>Azazel</p>
+                                        <p className='text-sm font-medium'>{session?.user.name.split(' ')[0] || 'Author'}</p>
                                         <Link href={''} className='text-xs font-light hover:text-black'>View Profile</Link>
                                     </div>
                                 </div>

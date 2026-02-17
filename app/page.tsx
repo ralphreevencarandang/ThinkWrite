@@ -1,9 +1,13 @@
-import Image from "next/image";
+
 import PublicClient from "./(public)/PublicClient";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import ProtectedClient from "./(protected)/ProtectedClient";
+import SessionProvider from "@/providers/SessionProvider";
+
+
 export default async function Home() {
+
   const session = await auth.api.getSession({
       headers: await headers()
   });
@@ -11,7 +15,11 @@ export default async function Home() {
    if(!session){
     return <PublicClient/>
   }
+
   return (
-    <ProtectedClient/>
+    <SessionProvider session={session}>
+       <ProtectedClient/>
+    </SessionProvider>
+
   );
 }

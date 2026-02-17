@@ -2,8 +2,7 @@
 
 import { headers } from "next/headers";
 import { auth } from "../auth";
-import { NextResponse } from "next/server";
-import { redirect } from "next/navigation";
+
 
 
 export const signin = async (email: string, password: string)=>{
@@ -50,7 +49,7 @@ export const signup = async (email:string, password:string, firstname:string, la
             body:{
                 email,
                 password,
-                name: `${firstname}-${lastname}`
+                name: `${firstname} ${lastname}`
             }
         })
 

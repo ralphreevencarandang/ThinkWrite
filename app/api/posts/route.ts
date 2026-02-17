@@ -57,7 +57,7 @@ export const GET = async ()=>{
         })
 
         if(!session){
-            return NextResponse.json({message: "Unauthorized. Authenticatio Required"}, {status: 401})
+            return NextResponse.json({message: "Unauthorized. Authenticatio Required", success: false}, {status: 401})
         }
 
   

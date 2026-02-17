@@ -10,11 +10,12 @@ import { useGSAP } from '@gsap/react';
 import SignupForm from './SignupForm';
 import { useAuthStore } from '@/store/auth.store';
 import { signinSocial } from '@/lib/actions/auth-actions';
-import { useRouter } from 'next/navigation';
+
+
 
 const AuthModal = ({ label, btnClass }: { label: string; btnClass?: string }) => {
 
-    const router = useRouter();
+
 
     const [isOpen, setIsOpen] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null)
