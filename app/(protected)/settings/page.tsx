@@ -26,7 +26,7 @@ const page = async () => {
   
 
           <div className="">
-            <ProfileForm/>
+            <ProfileForm session={session}/>
           
 
           </div>

@@ -24,3 +24,4 @@ export const signupSchema = z.object({
     message: "Passwords do not match",
     path: ["confirmPassword"], // show error under confirmPassword
   });
+
