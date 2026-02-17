@@ -20,31 +20,8 @@ const ProtectedClient = () => {
   const [isDesktopMenu, setDesktopMenu] = useState(true)
 
   return (
-    <section className='w-full relative'>
-
-        <ProtectedNavbar  onMobileMenuClick={()=> setMobileMenu(true)} onDesktopMenuClick={()=> setDesktopMenu(!isDesktopMenu)}/>
-
-        <div className='flex relative'>
-          <DesktopSidebar isDesktopMenu={isDesktopMenu}/>
-
-
-            <div className=' w-full p-10 h-full '>
-
+    <section className=''>
                 <MainContent/>
-            
-
-                <div className='h-screen'>
-
-                </div>
-
-           
-            </div>
-          
-          
-        </div>
-
-        <MobileSidebar onMobileMenuClick={()=>setMobileMenu(false) } isOpen={isMobileMenu}/>
-        
     </section>
   )
 }
