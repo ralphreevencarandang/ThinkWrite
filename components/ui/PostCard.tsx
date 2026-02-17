@@ -1,21 +1,16 @@
-import React from 'react'
-import Image from 'next/image'
-import { postImg, profilePlaceholder } from '@/public/images'
 import { MessageCircle, ThumbsUp } from 'lucide-react'
+import { postPlaceholder, profilePlaceholder, post2 } from '@/public/images'
+import Image from 'next/image'
 import { useAuthStore } from '@/store/auth.store'
-import PostCard from '@/components/ui/PostCard'
 
 
-const MainContent = () => {
+import React from 'react'
 
-    const {session} = useAuthStore();
-
+const PostCard = () => {
+        const {session} = useAuthStore();
+    
   return (
-    <article className='max-w-3xl mx-auto'>
-          
-            
-
-              <div className=' space-y-5 border-b border-zinc-300 py-4'>
+     <div className=' space-y-5 border-b border-zinc-300 py-4'>
 
                     <div className='flex flex-nowrap items-center gap-2'>
 
@@ -24,10 +19,10 @@ const MainContent = () => {
                         
                     </div>
 
-                   <div className='flex flex-col gap-3 lg:flex-row '>
+                    <div className='flex flex-col gap-3 lg:flex-row '>
 
                         <div className='lg:order-2 lg:w-100 '>
-                            <Image src={postImg} alt='post-image'  className='object-cover rounded  lg:h-50  w-full'/>
+                            <Image src={postPlaceholder} alt='post-image'  className='object-cover rounded  lg:h-50  w-full'/>
                         </div>
 
                         <div className='space-y-2'>
@@ -35,6 +30,7 @@ const MainContent = () => {
                             <p className='text-sm'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, architecto?...   </p>
                         </div>
                     </div>
+
                 
 
                     <div className='flex justify-between text-sm items-center'>
@@ -48,10 +44,7 @@ const MainContent = () => {
 
 
               </div>
-
-              <PostCard/>
-    </article>
   )
 }
 
-export default MainContent
+export default PostCard
