@@ -21,7 +21,7 @@ const ProtectedClient = () => {
 
   return (
     <section className=''>
-                <MainContent/>
+          <MainContent/>
     </section>
   )
 }

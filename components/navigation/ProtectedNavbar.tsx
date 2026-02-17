@@ -138,10 +138,10 @@ const ProtectedNavbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) 
                                         <p>Write</p>
                                     </Link>
 
-                                    <Link href={''} className='flex items-center gap-2 hover:text-black'>
+                                    <Link href={'/settings'} className='flex items-center gap-2 hover:text-black'>
                                         <Settings strokeWidth={1}/>
                                         <p>Settings</p>
-                                    </Link>
+                                    </Link> 
 
                                     <button className='flex items-center gap-2 hover:text-black cursor-pointer' onClick={handleSignout}>
                                         <LogOut strokeWidth={1}/>

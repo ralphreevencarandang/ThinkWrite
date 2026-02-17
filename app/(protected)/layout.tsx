@@ -20,7 +20,7 @@ const ProtectedLayout = ({children} : {children: React.ReactNode}) => {
 
         <div className='flex relative'>
           <DesktopSidebar isDesktopMenu={isDesktopMenu}/>
-            <div className=' w-full p-10 h-full '>
+            <div className=' w-full py-10 px-5 md:px-10 h-full '>
                 {children}
             </div>
         </div>
