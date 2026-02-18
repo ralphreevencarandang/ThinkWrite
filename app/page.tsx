@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import ProtectedClient from "./(protected)/ProtectedClient";
 import SessionProvider from "@/providers/SessionProvider";
-
+import ProtectedLayout from "./(protected)/layout";
 
 export default async function Home() {
 
@@ -18,7 +18,10 @@ export default async function Home() {
 
   return (
     <SessionProvider session={session}>
-       <ProtectedClient/>
+      <ProtectedLayout>
+         <ProtectedClient/>
+
+      </ProtectedLayout>
     </SessionProvider>
 
   );
