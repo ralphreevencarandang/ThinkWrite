@@ -7,22 +7,29 @@ import Image from 'next/image'
 import { profilePlaceholder } from '@/public/images'
 import { Session } from '@/types'
 import {useForm} from 'react-hook-form'
-
-import { signupSchema } from '@/validations/client/auth.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { updateProfileSchema } from '@/validations/client/auth.schema';
 
-type SignupFormFields = z.infer<typeof signupSchema>
+type updateFormFields = z.infer<typeof updateProfileSchema>
 
 const ProfileForm = ({session} : {session:Session }) => {
 
+            const fullName = session.user.name?.trim() ?? ""
+            const nameParts = fullName.split(/\s+/) // handles multiple spaces
+
+            const lastname = nameParts.pop() ?? ""
+            const firstname = nameParts.join(" ")
+
   
-          const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm<SignupFormFields>({
+          const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm<updateFormFields>({
               // Connect schema to react hook form
-              resolver: zodResolver(signupSchema),
+              resolver: zodResolver(updateProfileSchema),
               defaultValues:{
+                image: session.user.image,
                  email: session.user.email,
-                 firstname: session.user.name.split(' ')[0],
-                 lastname: session.user.name.split(' ')[1]
+                 firstname,
+                 lastname
+
               }
           })
 
@@ -38,7 +45,7 @@ console.log('Session: ', session);
                         
                         <Image src={session.user.image || profilePlaceholder} alt="profile image" width={100} height={100}  className="rounded-full object-cover   "/> 
                     </div>
-                    <input type="file" className="hidden" id="profile" accept="image/jpeg, image/png"> 
+                    <input type="file" {...register('image')} className="hidden" id="profile" accept="image/jpeg, image/png"> 
                     
                     </input>
                     <label htmlFor="profile">Select Image</label>
@@ -51,7 +58,7 @@ console.log('Session: ', session);
                 
                   <div>
                       <label htmlFor="" className="text-sm">Email</label>
-                      <input {...register('email')}  type="email" className=" w-full bg-stone-200 px-2 py-2 rounded outline-0 text-sm  focus:bg-white focus:border focus:border-zinc-200 transition-all" />
+                      <input {...register('email')}  type="email" readOnly className=" w-full bg-stone-200 px-2 py-2 rounded outline-0 text-sm  focus:bg-white focus:border focus:border-zinc-200 transition-all" />
                   </div>
                   <div>
                       <label htmlFor="" className="text-sm">Firstname</label>
