@@ -15,13 +15,18 @@ const page = async () => {
 
   if(!session){
     redirect('/')
+    
   }
 
 
   return (
-    <section className="max-w-3xl mx-auto">
+    <section className="max-w-3xl mx-auto space-y-15">
+
+        <div>
           <h1 className="text-3xl md:text-5xl font-semibold text-black mb-2">Settings</h1>
           <p className="text-xs">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, unde.</p>
+
+        </div>
 
   
 
