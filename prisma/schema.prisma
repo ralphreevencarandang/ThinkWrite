@@ -86,7 +86,7 @@ model Post {
   id String @id @default(cuid())
   authorId String
   author        User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  category String
+  category String?
 
   title String
   slug String @unique
@@ -95,8 +95,8 @@ model Post {
   featuredImage String?
 
 // Publish Status
-  published Boolean @default(false)
-  publishedAt DateTime?
+  isPublish Boolean @default(false)
+  publishedAt DateTime? @default(now())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -109,7 +109,7 @@ model Post {
 
   @@map("post")
   @@index([authorId])
-   @@index([published, publishedAt]) // Fast lookup of published posts
+   @@index([isPublish, publishedAt]) // Fast lookup of published posts
   @@index([slug]) // Already unique, but explicit index helps
 }
 
