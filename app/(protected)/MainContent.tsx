@@ -4,18 +4,20 @@ import { postImg, profilePlaceholder } from '@/public/images'
 import { MessageCircle, ThumbsUp } from 'lucide-react'
 import { useAuthStore } from '@/store/auth.store'
 import PostCard from '@/components/ui/PostCard'
-
+import axios from '@/lib/axios'
 
 const MainContent = () => {
 
-    const {session} = useAuthStore();
+    // const {session} = useAuthStore();
+
+    
 
   return (
     <article className='max-w-3xl mx-auto'>
           
             
 
-              <div className=' space-y-5 border-b border-zinc-300 py-4'>
+              {/* <div className=' space-y-5 border-b border-zinc-300 py-4'>
 
                     <div className='flex flex-nowrap items-center gap-2'>
 
@@ -47,7 +49,7 @@ const MainContent = () => {
 
 
 
-              </div>
+              </div> */}
 
               <PostCard/>
     </article>

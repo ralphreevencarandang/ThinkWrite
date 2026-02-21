@@ -14,7 +14,7 @@ const PublicNavbar = () => {
         <div className="max-container flex justify-between items-center py-4 text-sm font-semibold">
 
             <div>
-                <Link href={''} className='text-black text-lg'>ThinkWrite.</Link>
+                <Link href={'/'} className='text-black text-lg'>ThinkWrite.</Link>
             </div>
 
             <nav>

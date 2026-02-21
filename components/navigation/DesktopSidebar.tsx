@@ -30,20 +30,20 @@ const DesktopSidebar = ( {isDesktopMenu} : {isDesktopMenu : boolean}) => {
 
             <ul className='space-y-5'>
               <li>
-                <Link href={''} className='flex gap-2 items-center hover:text-black '> <House  strokeWidth={1} />Home</Link>
+                <Link href={'/'} className='flex gap-2 items-center hover:text-black '> <House  strokeWidth={1} />Home</Link>
               </li>
        
 
         
               <li>
-                <Link href={''} className='flex gap-2 items-center hover:text-black '> <Bookmark  strokeWidth={1} />Like</Link>
+                <Link href={'/library'} className='flex gap-2 items-center hover:text-black '> <Bookmark  strokeWidth={1} />Like</Link>
               </li>
               <li>
-                <Link href={''} className='flex gap-2 items-center hover:text-black '> <NotepadText  strokeWidth={1} />Stories</Link>
+                <Link href={'/stories'} className='flex gap-2 items-center hover:text-black '> <NotepadText  strokeWidth={1} />Stories</Link>
               </li>
 
               <li>
-                <Link href={''} className='flex gap-2 items-center hover:text-black '> <Settings  strokeWidth={1}  />Settings</Link>
+                <Link href={'/settings'} className='flex gap-2 items-center hover:text-black '> <Settings  strokeWidth={1}  />Settings</Link>
               </li>
             </ul>
 
