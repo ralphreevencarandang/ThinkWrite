@@ -102,10 +102,11 @@ const ProtectedNavbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) 
                 {/* Container 2 */}
                 <div className='flex items-center gap-5'>
                     
-                    <button className='cursor-pointer hidden sm:block'>
-
+                    <Link href={'/addStory'} className='cursor-pointer hidden sm:block'>
+                    
                         <SquarePen strokeWidth={1} className='hover:text-black transition-all'/>
-                    </button>
+                    </Link>
+           
 
                      <button className='sm:hidden'>
                         <Search strokeWidth={1}/>
