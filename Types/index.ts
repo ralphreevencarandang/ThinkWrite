@@ -28,4 +28,12 @@ export type SidebarProps = {
 }
 export type Session = typeof auth.$Infer.Session
 
+export type Post = {
+  authorId: string;
+  title: string;
+  excerpt?: string | null;
+  content: string;
+  featuredImage?: string | null;
+  isPublished: boolean;
+}
 

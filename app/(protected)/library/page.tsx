@@ -1,8 +1,8 @@
 import React from 'react'
-
+import Tiptap from '@/components/ui/Tiptap'
 const page = () => {
   return (
-    <div>Library</div>
+    <div><Tiptap/></div>
   )
 }
 

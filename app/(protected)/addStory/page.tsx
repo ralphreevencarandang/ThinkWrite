@@ -1,8 +1,37 @@
-import React from 'react'
 
-const page = () => {
+import React from 'react'
+import CreatePostForm from '@/components/forms/CreatePostForm'
+import { auth } from '@/lib/auth'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
+
+
+const page =  async () => {
+
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+  
+
+  if(!session){
+    redirect('/')
+  }
+
+
+
+
+ 
+
+
   return (
-    <div>Add story</div>
+    <section className='  relative overflow-hidden'>
+
+      {/* COLUMN 1 */}
+
+      <CreatePostForm/>
+
+
+    </section>
   )
 }
 
