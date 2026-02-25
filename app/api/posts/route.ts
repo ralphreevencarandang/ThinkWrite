@@ -36,7 +36,6 @@ export const POST = async (req: NextRequest)=>{
         
         const isPublishValue = formData.get("isPublish");
         const isPublish = isPublishValue === "on";
-
         const publishedAt = formData.get("publishedAt") as string;
 
         if (!title || !content) {
@@ -75,7 +74,6 @@ export const POST = async (req: NextRequest)=>{
         const newPost = await prisma.post.create({
             data: {
                 authorId: session.user.id,
-                category: category,
                 title: title,
                 slug: slug,
                 content: content,

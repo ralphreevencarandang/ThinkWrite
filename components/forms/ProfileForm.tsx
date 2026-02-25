@@ -8,7 +8,8 @@ import { profilePlaceholder } from '@/public/images'
 import { Session } from '@/types'
 import {useForm} from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { updateProfileSchema } from '@/validations/client/auth.schema';
+
+import { updateProfileSchema } from '@/validations/client/post.schema';
 
 type updateFormFields = z.infer<typeof updateProfileSchema>
 

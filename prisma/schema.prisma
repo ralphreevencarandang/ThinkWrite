@@ -90,7 +90,7 @@ model Post {
   title String
   slug String @unique
   excerpt String?
-  content Json
+  content String  @db.Text
   featuredImage String?
 
 // Publish Status

@@ -34,6 +34,6 @@ export type Post = {
   excerpt?: string | null;
   content: string;
   featuredImage?: string | null;
-  isPublished: boolean;
+  publishedAt: Date;
 }
 
