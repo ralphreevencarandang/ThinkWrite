@@ -14,6 +14,7 @@ import { useMutation } from '@tanstack/react-query'
 import { createPost } from '@/lib/actions/post-actions'
 import { useRouter } from 'next/navigation'
 import { X } from 'lucide-react'
+import toast from 'react-hot-toast'
 
 type CreatePostFormFields = z.infer<typeof createPostSchema>
 
@@ -44,8 +45,8 @@ const CreatePostForm = () => {
     },
     onSuccess: (data) => {
       console.log('Post created successfully:', data)
-      alert('Post published successfully!')
-      router.push('/posts')
+      toast.success('Post published successfully!')
+      router.push('/')
     },
     onError: (error: any) => {
       console.error('Error creating post:', error)
@@ -65,13 +66,14 @@ const CreatePostForm = () => {
     }
   }
 
-  // Submit handler
-  const onSubmit = async (data: CreatePostFormFields) => {
+  // Submit handler with publish status
+  const handleFormSubmit = (isPublish: boolean) => async (data: CreatePostFormFields) => {
     const editorContent = editor?.getHTML() || ''
 
     // Validate editor content
     if (!editorContent || editorContent === '<p></p>') {
       setEditorError('Body content is required')
+      toast.error('Please add content to the body of the post.')
       return
     }
 
@@ -88,11 +90,21 @@ const CreatePostForm = () => {
       content: editorContent,
       publishedAt: data.publishedAt || today,
       featuredImage: featuredImageFile,
+      isPublish: isPublish,
     })
   }
 
+  // Button click handlers
+  const handleDraftClick = () => {
+    handleSubmit(handleFormSubmit(false))()
+  }
+
+  const handlePublishClick = () => {
+    handleSubmit(handleFormSubmit(true))()
+  }
+
   return (
-    <form className='flex flex-col gap-10 md:flex-row' onSubmit={handleSubmit(onSubmit)}>
+    <form className='flex flex-col gap-10 md:flex-row'>
 
       <div className='space-y-5 md:w-[60%] lg:w-[70%] h-full'>
         <div className='space-y-2'>
@@ -191,13 +203,15 @@ const CreatePostForm = () => {
             className='px-4 py-2 rounded cursor-pointer border disabled:opacity-50' 
             type='button' 
             disabled={createPostMutation.isPending}
+            onClick={handleDraftClick}
           >
             Draft
           </button>
           <button
             className='border px-4 py-2 bg-black text-white rounded cursor-pointer disabled:opacity-50'
-            type='submit'
+            type='button'
             disabled={createPostMutation.isPending || isSubmitting}
+            onClick={handlePublishClick}
           >
             {createPostMutation.isPending ? 'Publishing...' : 'Publish'}
           </button>
@@ -215,6 +229,7 @@ interface CreatePostInput {
   content: string
   publishedAt: string
   featuredImage?: File
+  isPublish: boolean
 }
 
 export default CreatePostForm

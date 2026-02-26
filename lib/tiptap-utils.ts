@@ -352,7 +352,7 @@ export function selectionWithinConvertibleTypes(
 }
 
 /**
- * Handles image upload with progress tracking and abort capability
+ * Handles image upload with Cloudinary and progress tracking
  * @param file The file to upload
  * @param onProgress Optional callback for tracking upload progress
  * @param abortSignal Optional AbortSignal for cancelling the upload
@@ -374,17 +374,51 @@ export const handleImageUpload = async (
     )
   }
 
-  // For demo/testing: Simulate upload progress. In production, replace the following code
-  // with your own upload implementation.
-  for (let progress = 0; progress <= 100; progress += 10) {
-    if (abortSignal?.aborted) {
-      throw new Error("Upload cancelled")
-    }
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    onProgress?.({ progress })
-  }
+  const formData = new FormData()
+  formData.append("file", file)
 
-  return "/images/tiptap-ui-placeholder-image.jpg"
+  try {
+    const xhr = new XMLHttpRequest()
+
+    // Track upload progress
+    if (onProgress) {
+      xhr.upload.addEventListener("progress", (event) => {
+        if (event.lengthComputable) {
+          const percentComplete = Math.round(
+            (event.loaded / event.total) * 100
+          )
+          onProgress({ progress: percentComplete })
+        }
+      })
+    }
+
+    // Handle abort signal
+    if (abortSignal) {
+      abortSignal.addEventListener("abort", () => {
+        xhr.abort()
+      })
+    }
+
+    return new Promise((resolve, reject) => {
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText)
+          resolve(response.url)
+        } else {
+          reject(new Error("Upload failed"))
+        }
+      }
+
+      xhr.onerror = () => {
+        reject(new Error("Upload failed"))
+      }
+
+      xhr.open("POST", "/api/upload")
+      xhr.send(formData)
+    })
+  } catch (error) {
+    throw error
+  }
 }
 
 type ProtocolOptions = {

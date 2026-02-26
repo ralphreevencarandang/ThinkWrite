@@ -2,32 +2,49 @@ import { MessageCircle, ThumbsUp } from 'lucide-react'
 import { postPlaceholder, profilePlaceholder, post2 } from '@/public/images'
 import Image from 'next/image'
 import { useAuthStore } from '@/store/auth.store'
-
-
 import React from 'react'
+import Link from 'next/link'
+interface PostData {
+    id: string
+    title: string
+    excerpt: string
+    content: string
+    featuredImage: string
+    publishedAt: string
+    author: {
+        name: string
+        image: string
+    }
+    slug: string
+    isPublish: boolean
+}
 
-const PostCard = () => {
+interface PostCardProps {
+    data: PostData
+}
+
+const PostCard = ({ data }: PostCardProps) => {
         const {session} = useAuthStore();
     
   return (
-     <div className=' space-y-5 border-b border-zinc-300 py-4'>
+     <Link href={`/${data.slug}`} className=' space-y-5 border-b border-zinc-300 py-4'>
 
                     <div className='flex flex-nowrap items-center gap-2'>
 
-                        <Image src={session?.user.image || profilePlaceholder} alt='profile-img' width={30} height={30} className='rounded-full  object-contain'/>
-                        <p className='text-sm'>{session?.user.name || 'asd'}</p>
+                        <Image src={data?.author?.image || profilePlaceholder} alt='profile-img' width={30} height={30} className='rounded-full w-7 h-7 object-cover'/>
+                        <p className='text-sm'>{data?.author?.name || 'Unknown'}</p>
                         
                     </div>
 
-                    <div className='flex flex-col gap-3 lg:flex-row '>
+                    <div className='flex flex-col gap-3 lg:flex-row lg:justify-between '>
 
-                        <div className='lg:order-2 lg:w-100 '>
-                            <Image src={postPlaceholder} alt='post-image'  className='object-cover rounded  lg:h-50  w-full'/>
+                        <div className='lg:order-2 lg:w-[50%] relative h-50 '>
+                            <Image src={data?.featuredImage || postPlaceholder} alt='post-image' fill className='object-cover rounded'/>
                         </div>
 
-                        <div className='space-y-2'>
-                            <h2 className='font-bold text-xl text-black'>Title: Lorem ipsum dolor sit, amet ?</h2>
-                            <p className='text-sm'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, architecto?...   </p>
+                        <div className='space-y-2 lg:w-[50%] '>
+                            <h2 className='font-bold text-xl text-black'>{data?.title}</h2>
+                            <p className='text-sm'>{data?.excerpt}   </p>
                         </div>
                     </div>
 
@@ -38,12 +55,12 @@ const PostCard = () => {
                             <button className='cursor-pointer'><ThumbsUp strokeWidth={1} className='w-5'/></button>
                             <button className='cursor-pointer'><MessageCircle strokeWidth={1} className='w-5'/></button>
                         </div>
-                        <p className='text-xs text-zinc-500'>Nov 11, 2025</p>
+                        <p className='text-xs text-zinc-500'>{new Date(data?.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</p>
                     </div>
 
 
 
-              </div>
+              </Link>
   )
 }
 

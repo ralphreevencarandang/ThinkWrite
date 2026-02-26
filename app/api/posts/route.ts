@@ -108,7 +108,16 @@ export const GET = async ()=>{
   
 
 
-        const posts = await prisma.post.findMany();
+        const posts = await prisma.post.findMany({
+            include: {
+                author: {
+                    select: {
+                        name: true,
+                        image: true
+                    }
+                }
+            }
+        });
 
         if(!posts){
             return NextResponse.json({message: 'Failed to fetch post'}, {status: 404})

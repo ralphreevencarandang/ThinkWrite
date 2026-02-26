@@ -11,6 +11,7 @@ interface CreatePostInput {
   content: string
   publishedAt: string
   featuredImage?: File
+  isPublish: boolean
 }
 
 export const createPost = async (data: CreatePostInput) => {
@@ -24,7 +25,7 @@ export const createPost = async (data: CreatePostInput) => {
       return { success: false, message: "Unauthorized. Authentication Required" }
     }
 
-    const { title, excerpt, content, publishedAt, featuredImage } = data
+    const { title, excerpt, content, publishedAt, featuredImage, isPublish } = data
 
     // Validation
     if (!title || !content) {
@@ -71,6 +72,7 @@ export const createPost = async (data: CreatePostInput) => {
         content,
         excerpt,
         featuredImage: uploadedImageUrl || null,
+        isPublish: isPublish,
       },
     })
 
