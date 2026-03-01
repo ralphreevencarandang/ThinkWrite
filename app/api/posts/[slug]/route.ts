@@ -112,3 +112,26 @@ export const DELETE = async (
         
     }
 }
+
+
+export const GET = async (req: NextRequest, { params }: { params: Promise<{ slug: string }> }) => {
+    try {
+        const { slug } = await params;
+        const post = await prisma.post.findUnique({
+            where: {
+                slug: slug, 
+                isPublish: true
+            },
+        })
+
+        if(!post){
+            return NextResponse.json({message: 'No published post found'}, {status: 404})
+        }
+
+    
+        return NextResponse.json({post}, {status: 200})
+    } catch (error) {  
+        console.log('Failed to fetch posts: ', error);
+        return NextResponse.json({message: 'Internal Server Error'}, {status: 500})
+    }
+}
