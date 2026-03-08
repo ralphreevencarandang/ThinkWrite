@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import DraftStories from '@/components/ui/DraftStories'
+import PublishedStories from '@/components/ui/PublishedStories'
 
 const page = () => {
   const [activeTab, setActiveTab] = useState<'drafts' | 'published'>('drafts')
@@ -44,12 +45,7 @@ const page = () => {
       {activeTab === 'drafts' && <DraftStories />}
 
       {/* Published Tab Content */}
-      {activeTab === 'published' && (
-        <div className='py-12 text-center'>
-          <p className='text-gray-500 text-lg'>No published stories yet</p>
-          <p className='text-gray-400 text-sm mt-1'>Publish a draft to see it here</p>
-        </div>
-      )}
+      {activeTab === 'published' && <PublishedStories />}
     </section>
   )
 }

@@ -14,10 +14,10 @@ const MainContent = () => {
 
     const {session} = useAuthStore();
     const { data, isLoading, error } = useQuery({
-        queryKey: ['posts'],
+        queryKey: ['all-posts'],
         queryFn: async () => {
             try {
-                const response = await axios.get('/posts')
+                const response = await axios.get('/posts/all')
                 return response.data.posts
                 
             } catch (error) {
@@ -36,7 +36,7 @@ const MainContent = () => {
 
         {isLoading && <Loader />}
 
-        {!isLoading && data?.length > 0 && data?.filter((post: any) => post.isPublish).sort((a: any, b: any) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()).map( (post: any) => (
+        {!isLoading && data?.length > 0 && data?.sort((a: any, b: any) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()).map( (post: any) => (
             <PostCard key={post.id} data={post}/>
         ))}
 

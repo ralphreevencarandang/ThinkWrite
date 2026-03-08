@@ -107,16 +107,15 @@ export const GET = async (req: NextRequest)=>{
 
         const { searchParams } = new URL(req.url);
         const isPublish = searchParams.get('isPublish');
-        const authorId = searchParams.get('authorId');
 
-        const whereCondition: any = {};
+        // Build where condition - always filter by logged-in author
+        const whereCondition: any = {
+            authorId: session.user.id
+        };
+
+        // Optionally filter by publish status
         if (isPublish !== null) {
             whereCondition.isPublish = isPublish === 'true';
-        }
-        if (authorId) {
-            whereCondition.authorId = authorId;
-        } else {
-            whereCondition.authorId = session.user.id;
         }
 
         const posts = await prisma.post.findMany({
