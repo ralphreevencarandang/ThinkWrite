@@ -94,7 +94,7 @@ export const POST = async (req: NextRequest)=>{
 }
 
 
-export const GET = async ()=>{
+export const GET = async (req: NextRequest)=>{
     try {
 
         const session = await auth.api.getSession({
@@ -105,10 +105,22 @@ export const GET = async ()=>{
             return NextResponse.json({message: "Unauthorized. Authenticatio Required", success: false}, {status: 401})
         }
 
-  
+        const { searchParams } = new URL(req.url);
+        const isPublish = searchParams.get('isPublish');
+        const authorId = searchParams.get('authorId');
 
+        const whereCondition: any = {};
+        if (isPublish !== null) {
+            whereCondition.isPublish = isPublish === 'true';
+        }
+        if (authorId) {
+            whereCondition.authorId = authorId;
+        } else {
+            whereCondition.authorId = session.user.id;
+        }
 
         const posts = await prisma.post.findMany({
+            where: whereCondition,
             include: {
                 author: {
                     select: {
@@ -116,12 +128,11 @@ export const GET = async ()=>{
                         image: true
                     }
                 }
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         });
-
-        if(!posts){
-            return NextResponse.json({message: 'Failed to fetch post'}, {status: 404})
-        }
 
         return NextResponse.json({posts: posts }, {status: 200})
         

@@ -29,7 +29,7 @@ const page = ( ) => {
   return (
     <section className='max-w-3xl mx-auto'>
 
-        this is the stories slug page for {slug}
+        <h1 className='font-bold capitalize text-3xl mb-10'>{slug}</h1>
         <ReadOnlyEditor content={data?.post?.content }/>
     </section>
   )
