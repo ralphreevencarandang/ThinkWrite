@@ -5,9 +5,9 @@ import { useGetPosts } from '@/lib/react-queries/posts.query'
 import { Loader } from './Loader'
 import StoryCard from './StoryCard'
 const DraftStories = () => {
-  const { data: drafts, isLoading, error } = useGetPosts(false)
+  const { data: drafts, isPending, error } = useGetPosts(false)
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className='flex justify-center items-center py-12'>
         <Loader />
@@ -41,6 +41,7 @@ const DraftStories = () => {
           <StoryCard
             key={post.id}
             id={post.id}
+            slug={post.slug}
             title={post.title}
             excerpt={post.excerpt}
             featuredImage={post.featuredImage}

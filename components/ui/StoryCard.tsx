@@ -5,8 +5,19 @@ import { Ellipsis, Trash2, Edit } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import { useMutation } from '@tanstack/react-query'
+import axios from '@/lib/axios'
+import { deletePost } from '@/lib/actions/post-actions'
+import toast from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
+
+interface DeletePostResponse {
+  success: boolean
+  message: string
+}
 interface StoryCardProps {
   id: string
+  slug: string
   title: string
   excerpt?: string
   featuredImage?: string
@@ -14,9 +25,11 @@ interface StoryCardProps {
   content: string
 }
 
-const StoryCard = ({ id, title, excerpt, featuredImage, createdAt, content }: StoryCardProps) => {
+const StoryCard = ({ id, slug, title, excerpt, featuredImage, createdAt, content }: StoryCardProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+
+  const router = useRouter()
   
   const wordCount = content.split(/\s+/).length
   const readTime = Math.ceil(wordCount / 200) // 200 words per minute
@@ -24,6 +37,24 @@ const StoryCard = ({ id, title, excerpt, featuredImage, createdAt, content }: St
     year: 'numeric',
     month: 'short',
     day: 'numeric'
+  })
+
+  // Delete mutation
+  const deletePostMutation = useMutation<DeletePostResponse, Error, string>({
+    mutationFn: (postId: string) => deletePost(postId),
+    onSuccess: (response) => {
+      if (response.success) {
+        console.log('Post deleted successfully:', response.message)
+        setIsMenuOpen(false)
+        router.refresh() // Refresh the page to reflect changes
+        toast.success('Story deleted successfully!')
+      } else {
+        console.error('Delete failed:', response.message)
+      }
+    },
+    onError: (error) => {
+      console.error('Error deleting post:', error)
+    }
   })
 
   // Close menu when clicking outside
@@ -44,17 +75,20 @@ const StoryCard = ({ id, title, excerpt, featuredImage, createdAt, content }: St
   }, [isMenuOpen])
 
   const handleEdit = () => {
-    console.log('Edit story:', id)
+    router.push(`/editStory/${slug}`)
     setIsMenuOpen(false)
   }
 
   const handleDelete = () => {
-    console.log('Delete story:', id)
-    setIsMenuOpen(false)
+    if (window.confirm('Are you sure you want to delete this story? This action cannot be undone.')) {
+      deletePostMutation.mutate(id)
+    }
   }
 
+
+
   return (
-    <Link href={'/'} className='flex flex-col md:justify-between md:flex-row md:items-center border-b border-gray-200 py-4'>
+    <div  className='flex flex-col md:justify-between md:flex-row md:items-center border-b border-gray-200 py-4'>
       <div className='flex items-center gap-5'>
        
           <Image 
@@ -75,9 +109,9 @@ const StoryCard = ({ id, title, excerpt, featuredImage, createdAt, content }: St
       <div className='relative mt-3 md:mt-0' ref={menuRef}>
         <button 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className='cursor-pointer hover:bg-gray-100 p-2 rounded-full transition-colors'
+          className='cursor-pointer hover:bg-gray-100 p-2 rounded-full transition-colors max-sm:self-end'
         >
-          <Ellipsis className='max-sm:self-end' size={20}/>
+          <Ellipsis  size={20}/>
         </button>
 
         {/* Dropdown Menu */}
@@ -93,16 +127,19 @@ const StoryCard = ({ id, title, excerpt, featuredImage, createdAt, content }: St
 
             <button
               onClick={handleDelete}
-              className='w-full cursor-pointer flex items-center gap-3 px-4 py-2 hover:bg-red-50 transition-colors text-left text-red-600 hover:text-red-700'
+              disabled={deletePostMutation.isPending}
+              className='w-full cursor-pointer flex items-center gap-3 px-4 py-2 hover:bg-red-50 transition-colors text-left text-red-600 hover:text-red-700 disabled:opacity-50 disabled:cursor-not-allowed'
             >
               <Trash2 size={16} />
-              <span className='text-sm font-light cursor-pointer'>Delete Story</span>
+              <span className='text-sm font-light'>
+                {deletePostMutation.isPending ? 'Deleting...' : 'Delete Story'}
+              </span>
             </button>
 
           </div>
         )}
       </div>
-    </Link>
+    </div>
   )
 }
 

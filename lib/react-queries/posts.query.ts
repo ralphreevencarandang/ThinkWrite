@@ -20,6 +20,24 @@ export const useGetPosts = (isPublish?: boolean) => {
     return useQuery({
         queryKey: ['posts', isPublish],
         queryFn: () => getPosts(isPublish),
-        staleTime: 1000 * 60 * 5, // 5 minutes
+        // staleTime: 1000 * 60 * 2, // 2 minutes
+    })
+}
+
+export const getPost = async (slug: string) => {
+    try {
+        const res = await axios.get(`/posts/${slug}`)
+        return res.data.post
+    } catch (error) {
+        console.log('Error fetching post: ', error)
+        throw error
+    }
+}
+
+export const useGetPost = (slug: string) => {
+    return useQuery({
+        queryKey: ['post', slug],
+        queryFn: () => getPost(slug),
+        enabled: !!slug, // Only run query if slug exists
     })
 }

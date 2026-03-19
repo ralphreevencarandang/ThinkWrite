@@ -6,9 +6,9 @@ import { Loader } from './Loader'
 import StoryCard from './StoryCard'
 
 const PublishedStories = () => {
-  const { data: published, isLoading, error } = useGetPosts(true)
+  const { data: published, isPending, error } = useGetPosts(true)
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className='flex justify-center items-center py-12'>
         <Loader />
@@ -42,6 +42,7 @@ const PublishedStories = () => {
           <StoryCard
             key={post.id}
             id={post.id}
+            slug={post.slug}
             title={post.title}
             excerpt={post.excerpt}
             featuredImage={post.featuredImage}

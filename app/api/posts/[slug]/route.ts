@@ -120,7 +120,7 @@ export const GET = async (req: NextRequest, { params }: { params: Promise<{ slug
         const post = await prisma.post.findUnique({
             where: {
                 slug: slug, 
-                isPublish: true
+                // isPublish: true
             },
         })
 

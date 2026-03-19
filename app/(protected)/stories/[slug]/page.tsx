@@ -29,7 +29,7 @@ const page = ( ) => {
   return (
     <section className='max-w-3xl mx-auto'>
 
-        <h1 className='font-bold capitalize text-3xl mb-10'>{slug}</h1>
+        <h1 className='font-bold capitalize text-3xl mb-10'>{data?.post?.title}</h1>
         <ReadOnlyEditor content={data?.post?.content }/>
     </section>
   )

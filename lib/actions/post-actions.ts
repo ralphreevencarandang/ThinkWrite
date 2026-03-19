@@ -89,3 +89,60 @@ export const createPost = async (data: CreatePostInput) => {
     }
   }
 }
+
+export const deletePost = async (postId: string) => {
+  try {
+    // Get session
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    })
+
+    if (!session) {
+      return { success: false, message: "Unauthorized. Authentication Required" }
+    }
+
+    // Verify post exists and user is the author
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      select: { authorId: true, featuredImage: true }
+    })
+
+    if (!post) {
+      return { success: false, message: "Post not found" }
+    }
+
+    if (post.authorId !== session.user.id) {
+      return { success: false, message: "Unauthorized. You can only delete your own posts" }
+    }
+
+    // Delete featured image from Cloudinary if it exists
+    if (post.featuredImage) {
+      try {
+        const imageUrl = post.featuredImage
+        const publicId = imageUrl.split('/').pop()?.split('.')[0]
+        if (publicId) {
+          await cloudinary.uploader.destroy(`ThinkWrite/${publicId}`)
+        }
+      } catch (imageError) {
+        console.error("Error deleting image from Cloudinary:", imageError)
+        // Continue with post deletion even if image deletion fails
+      }
+    }
+
+    // Delete post from database
+    await prisma.post.delete({
+      where: { id: postId }
+    })
+
+    return {
+      success: true,
+      message: "Post deleted successfully",
+    }
+  } catch (error) {
+    console.error("Error in deletePost action:", error)
+    return {
+      success: false,
+      message: "Internal server error. Failed to delete post",
+    }
+  }
+}
