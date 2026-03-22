@@ -13,6 +13,7 @@ import { createPostSchema } from '@/validations/client/post.schema'
 import { useRouter } from 'next/navigation'
 import { X } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { useUpdatePost } from '@/lib/react-queries/posts.query'
 
 type CreatePostFormFields = z.infer<typeof createPostSchema>
 
@@ -31,6 +32,7 @@ interface EditPostFormProps {
 
 const EditPostForm = ({ initialPost }: EditPostFormProps) => {
   const router = useRouter()
+  const { mutate: updatePost, isPending, error } = useUpdatePost()
 
   const { register, handleSubmit, watch, formState: { errors }, setValue } = useForm({
     resolver: zodResolver(createPostSchema),
@@ -44,6 +46,7 @@ const EditPostForm = ({ initialPost }: EditPostFormProps) => {
   const [editor, setEditor] = useState<Editor | null>(null)
   const [editorError, setEditorError] = useState<string | null>(null)
   const [uploadedImage, setUploadedImage] = useState<string | null>(initialPost.featuredImage || null)
+  const [imageFile, setImageFile] = useState<File | null>(null)
   const excerptValue = watch("excerpt", initialPost.excerpt)
 
   // Set editor content after editor is ready
@@ -57,6 +60,7 @@ const EditPostForm = ({ initialPost }: EditPostFormProps) => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
+      setImageFile(file)
       const reader = new FileReader()
       reader.onload = (event) => {
         setUploadedImage(event.target?.result as string)
@@ -65,7 +69,7 @@ const EditPostForm = ({ initialPost }: EditPostFormProps) => {
     }
   }
 
-  // Submit handler (not functional yet, just display)
+  // Submit handler
   const handleFormSubmit = (isPublish: boolean) => async (data: CreatePostFormFields) => {
     const editorContent = editor?.getHTML() || ''
 
@@ -77,15 +81,35 @@ const EditPostForm = ({ initialPost }: EditPostFormProps) => {
     }
 
     setEditorError(null)
-    // TODO: Implement actual update logic
-    console.log('Update story with:', {
-      title: data.title,
-      excerpt: data.excerpt,
-      content: editorContent,
-      publishedAt: data.publishedAt,
-      isPublish: isPublish,
-    })
-    toast.success('Edit functionality coming soon!')
+
+    // Call update mutation
+    updatePost(
+      {
+        postId: initialPost.id,
+        data: {
+          title: data.title,
+          excerpt: data.excerpt,
+          content: editorContent,
+          publishedAt: data.publishedAt || new Date().toISOString().split('T')[0],
+          isPublish: isPublish,
+          featuredImage: imageFile || uploadedImage || undefined,
+          currentFeaturedImage: uploadedImage || undefined,
+        }
+      },
+      {
+        onSuccess: (result) => {
+          if (result.success) {
+            toast.success(result.message)
+            router.push('/stories')
+          } else {
+            toast.error(result.message)
+          }
+        },
+        onError: (err) => {
+          toast.error(err instanceof Error ? err.message : 'Failed to update post')
+        }
+      }
+    )
   }
 
   // Button click handlers
@@ -99,6 +123,14 @@ const EditPostForm = ({ initialPost }: EditPostFormProps) => {
 
   return (
     <form className='flex flex-col gap-10 md:flex-row'>
+      
+      {/* Error display */}
+      {error && (
+        <div className='fixed top-4 right-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 max-w-sm z-50'>
+          <p className='font-medium'>Update failed</p>
+          <p className='text-sm'>{error instanceof Error ? error.message : 'An error occurred'}</p>
+        </div>
+      )}
 
       <div className='space-y-5 md:w-[60%] lg:w-[70%] h-full'>
         <div className='space-y-2'>
@@ -197,15 +229,17 @@ const EditPostForm = ({ initialPost }: EditPostFormProps) => {
             className='px-4 py-2 rounded cursor-pointer border disabled:opacity-50' 
             type='button' 
             onClick={handleDraftClick}
+            disabled={isPending}
           >
-            Save as Draft
+            {isPending ? 'Saving...' : 'Save as Draft'}
           </button>
           <button
             className='border px-4 py-2 bg-black text-white rounded cursor-pointer disabled:opacity-50'
             type='button'
             onClick={handlePublishClick}
+            disabled={isPending}
           >
-            Update & Publish
+            {isPending ? 'Publishing...' : 'Publish'}
           </button>
         </div>
 

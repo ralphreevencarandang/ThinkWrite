@@ -42,7 +42,6 @@ const EditStoryPage = () => {
 
   return (
     <section className='relative overflow-hidden'>
-      <h1 className='font-normal capitalize text-3xl mb-10'>Edit Story</h1>
       <EditPostForm initialPost={post} />
     </section>
   )
