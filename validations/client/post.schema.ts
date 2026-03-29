@@ -27,3 +27,8 @@ export const createPostSchema = z.object({
     featuredImage: z.any().nullable().optional(),
     publishedAt: z.string().optional(),
 })
+
+export const updateBasicProfileSchema = z.object({
+    firstname: z.string().min(2, 'Firstname must be at least 2 characters'),
+    lastname: z.string().min(2, 'Lastname must be at least 2 characters'),
+})

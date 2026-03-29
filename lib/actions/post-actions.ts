@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import cloudinary from "@/lib/cloudinary";
 import { generateSlug } from "@/lib/utils";
+import { revalidatePath } from "next/cache";
 
 interface CreatePostInput {
   title: string
@@ -278,3 +279,47 @@ export const updatePost = async (postId: string, data: UpdatePostInput) => {
     }
   }
 }
+
+export const likePost = async (postId: string, userId: string) => {
+  try {
+    // 1. Check if the user has already liked the post
+    const existingLike = await prisma.like.findUnique({
+      where: {
+        postId_userId: {
+          postId,
+          userId,
+        },
+      },
+    });
+
+    if (existingLike) {
+      // 2. If it exists, remove the like (Unlike)
+      await prisma.like.delete({
+        where: {
+          postId_userId: {
+            postId,
+            userId,
+          },
+        },
+      });
+      
+      return { success: true, liked: false };
+    } else {
+      // 3. If it doesn't exist, create the like (Like)
+      await prisma.like.create({
+        data: {
+          postId,
+          userId,
+        },
+      });
+      
+      return { success: true, liked: true };
+    }
+  } catch (error) {
+    console.error("Error in likePost action:", error);
+    return {
+      success: false,
+      message: "Internal server error. Failed to toggle like.",
+    };
+  }
+};

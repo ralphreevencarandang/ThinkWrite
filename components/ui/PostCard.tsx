@@ -2,8 +2,12 @@ import { MessageCircle, ThumbsUp } from "lucide-react";
 import { postPlaceholder, profilePlaceholder, post2 } from "@/public/images";
 import Image from "next/image";
 import { useAuthStore } from "@/store/auth.store";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import { likePost } from "@/lib/actions/post-actions";
+import { useLikePost } from "@/lib/react-queries/posts.query";
+// import { toast } from "sonner";
+import toast from "react-hot-toast";
 interface PostData {
   id: string;
   title: string;
@@ -17,14 +21,41 @@ interface PostData {
   };
   slug: string;
   isPublish: boolean;
+  // Added fields to track likes
+  likes?: { userId: string }[];
+  _count?: {
+    likes: number;
+    comments: number;
+  };
+  isLikedByCurrentUser?: boolean;
 }
 
 interface PostCardProps {
   data: PostData;
 }
 
+
+
 const PostCard = ({ data }: PostCardProps) => {
   const { session } = useAuthStore();
+  const { mutate: toggleLike, isPending: isLiking } = useLikePost();
+
+  const handleLike = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    
+    if (!session?.user?.id) {
+      toast.error("Please sign in to like posts");
+      return;
+    }
+
+    toggleLike({
+      postId: data.id,
+      userId: session.user.id,
+    });
+  };
+
+  const likeCount = data._count?.likes ?? 0;
+  const isLiked = data.isLikedByCurrentUser ?? false;
 
   return (
  
@@ -61,15 +92,24 @@ const PostCard = ({ data }: PostCardProps) => {
           </Link>
 
           <div className="flex justify-between text-sm items-center">
-            <div className="flex gap-2">
-              <button className="cursor-pointer">
-                <ThumbsUp strokeWidth={1} className="w-5" />
+            <div className="flex gap-2 items-center">
+              <button 
+                onClick={handleLike}
+                disabled={isLiking || !session?.user?.id}
+                className="cursor-pointer transition-colors duration-200 hover:text-red-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                title={session?.user?.id ? "Like this post" : "Sign in to like"}
+              >
+                <ThumbsUp 
+                  strokeWidth={1} 
+                  className="w-5" 
+                  fill={isLiked ? "currentColor" : "none"}
+                />
+                <span className="text-xs">{likeCount}</span>
               </button>
 
-              <Link href={`/stories/${data.slug}`} className="cursor-pointer">
-                
+              <Link href={`/stories/${data.slug}`} className="cursor-pointer flex items-center gap-1 hover:text-blue-500 transition-colors">
                     <MessageCircle strokeWidth={1} className="w-5" />
-          
+                    <span className="text-xs">{data._count?.comments ?? 0}</span>
               </Link>
 
             </div>

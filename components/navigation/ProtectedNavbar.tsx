@@ -113,18 +113,21 @@ const ProtectedNavbar = ({onMobileMenuClick, onDesktopMenuClick} : NavbarProps) 
                     </button>
                     {/* Profile Icon */}
 
-                    <div className='relative'>
-                        <div className='rounded-full '>
+                    <div className='relative '>
+                        <div className='   w-8 h-8 rounded-full overflow-hidden '>
                             <button className='cursor-pointer ' onClick={()=>setIsSettingOpen(!isSettingOpen)}>
-                                    <Image src={ session?.user.image || profilePlaceholder } width={35} height={35} alt="Profile Image" className='object-contain rounded-full'/>
+                                    <Image src={ session?.user.image || profilePlaceholder } fill alt="Profile Image" className='object-cover rounded-full'/>
                             </button>
                         </div>
 
                         <div ref={menuRef} className=' w-50 absolute right-0 top-12 border border-zinc-300 bg-white shadow opacity-0 px-4 py-6 space-y-5 rounded ' >
 
                                 <div className='flex items-center gap-2'>
-                                    <div className=' '>
-                                        <Image src={ session?.user.image || profilePlaceholder } width={40} height={40} alt='profile-image' className='object-contain rounded-full'></Image>
+                                    <div className='  relative w-10 h-10 rounded-full overflow-hidden'>
+                                        
+                                            <Image src={ session?.user.image || profilePlaceholder } fill   alt='profile-image' className='object-cover rounded-full '></Image>
+
+                                     
                                     </div>
 
                                     <div>

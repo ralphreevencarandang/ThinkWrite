@@ -1,6 +1,6 @@
 import axios from '@/lib/axios'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { updatePost } from '@/lib/actions/post-actions'
+import { updatePost, likePost } from '@/lib/actions/post-actions'
 
 export const getPosts = async (isPublish?: boolean) => {
     try {
@@ -65,6 +65,61 @@ export const useUpdatePost = () => {
                 queryClient.invalidateQueries({ queryKey: ['post'] })
                 queryClient.invalidateQueries({ queryKey: ['posts'] })
             }
+        },
+    })
+}
+
+interface LikePostInput {
+    postId: string
+    userId: string
+}
+
+export const useLikePost = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: ({ postId, userId }: LikePostInput) =>
+            likePost(postId, userId),
+        onMutate: async ({ postId, userId }) => {
+            // Cancel outgoing refetches so they don't overwrite our optimistic update
+            await queryClient.cancelQueries({ queryKey: ['all-posts'] })
+
+            // Snapshot the previous value
+            const previousPosts = queryClient.getQueryData(['all-posts']) as any[]
+
+            // Optimistically update to the new value
+            if (previousPosts) {
+                queryClient.setQueryData(['all-posts'], (old: any[]) => {
+                    return old.map((post: any) => {
+                        if (post.id === postId) {
+                            return {
+                                ...post,
+                                isLikedByCurrentUser: !post.isLikedByCurrentUser,
+                                _count: {
+                                    ...post._count,
+                                    likes: post.isLikedByCurrentUser
+                                        ? (post._count?.likes || 1) - 1
+                                        : (post._count?.likes || 0) + 1,
+                                },
+                            }
+                        }
+                        return post
+                    })
+                })
+            }
+
+            // Return a context object with the snapshotted value
+            return { previousPosts }
+        },
+        onError: (err, variables, context) => {
+            // Rollback to the previous value on error
+            if (context?.previousPosts) {
+                queryClient.setQueryData(['all-posts'], context.previousPosts)
+            }
+        },
+        onSuccess: () => {
+            // Refetch to ensure consistency with the server
+            queryClient.invalidateQueries({ queryKey: ['all-posts'] })
         },
     })
 }
