@@ -43,6 +43,23 @@ export const useGetPost = (slug: string) => {
     })
 }
 
+export const getLikedPosts = async () => {
+    try {
+        const res = await axios.get('/posts/liked')
+        return res.data.posts
+    } catch (error) {
+        console.log('Error fetching liked posts: ', error)
+        throw error
+    }
+}
+
+export const useGetLikedPosts = () => {
+    return useQuery({
+        queryKey: ['liked-posts'],
+        queryFn: () => getLikedPosts(),
+    })
+}
+
 interface UpdatePostInput {
     title: string
     excerpt: string
@@ -83,12 +100,14 @@ export const useLikePost = () => {
         onMutate: async ({ postId, userId }) => {
             // Cancel outgoing refetches so they don't overwrite our optimistic update
             await queryClient.cancelQueries({ queryKey: ['all-posts'] })
+            await queryClient.cancelQueries({ queryKey: ['liked-posts'] })
 
-            // Snapshot the previous value
-            const previousPosts = queryClient.getQueryData(['all-posts']) as any[]
+            // Snapshot the previous values
+            const previousAllPosts = queryClient.getQueryData(['all-posts']) as any[]
+            const previousLikedPosts = queryClient.getQueryData(['liked-posts']) as any[]
 
-            // Optimistically update to the new value
-            if (previousPosts) {
+            // Optimistically update all-posts
+            if (previousAllPosts) {
                 queryClient.setQueryData(['all-posts'], (old: any[]) => {
                     return old.map((post: any) => {
                         if (post.id === postId) {
@@ -108,18 +127,46 @@ export const useLikePost = () => {
                 })
             }
 
-            // Return a context object with the snapshotted value
-            return { previousPosts }
+            // Optimistically update liked-posts
+            if (previousLikedPosts) {
+                queryClient.setQueryData(['liked-posts'], (old: any[]) => {
+                    const wasLiked = old.some((post: any) => post.id === postId)
+                    if (wasLiked) {
+                        // Remove from liked posts if user is unliking
+                        return old.filter((post: any) => post.id !== postId)
+                    } else {
+                        // Add to liked posts if user is liking (find the post from all-posts)
+                        const likedPost = previousAllPosts?.find((p: any) => p.id === postId)
+                        if (likedPost) {
+                            return [
+                                {
+                                    ...likedPost,
+                                    isLikedByCurrentUser: true,
+                                },
+                                ...old
+                            ]
+                        }
+                    }
+                    return old
+                })
+            }
+
+            // Return a context object with the snapshotted values
+            return { previousAllPosts, previousLikedPosts }
         },
         onError: (err, variables, context) => {
-            // Rollback to the previous value on error
-            if (context?.previousPosts) {
-                queryClient.setQueryData(['all-posts'], context.previousPosts)
+            // Rollback to the previous values on error
+            if (context?.previousAllPosts) {
+                queryClient.setQueryData(['all-posts'], context.previousAllPosts)
+            }
+            if (context?.previousLikedPosts) {
+                queryClient.setQueryData(['liked-posts'], context.previousLikedPosts)
             }
         },
         onSuccess: () => {
             // Refetch to ensure consistency with the server
             queryClient.invalidateQueries({ queryKey: ['all-posts'] })
+            queryClient.invalidateQueries({ queryKey: ['liked-posts'] })
         },
     })
 }

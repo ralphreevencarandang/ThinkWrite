@@ -40,6 +40,14 @@ const PostCard = ({ data }: PostCardProps) => {
   const { session } = useAuthStore();
   const { mutate: toggleLike, isPending: isLiking } = useLikePost();
 
+  const wordCount = data.content.split(/\s+/).length
+  const readTime = Math.ceil(wordCount / 200) // 200 words per minute
+  const formattedDate = new Date(data.publishedAt).toLocaleDateString('en-US', { 
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  })
+
   const handleLike = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     
@@ -57,6 +65,12 @@ const PostCard = ({ data }: PostCardProps) => {
   const likeCount = data._count?.likes ?? 0;
   const isLiked = data.isLikedByCurrentUser ?? false;
 
+  const capitalizeName = (name:string) =>
+  name
+    ?.split(" ")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ") || "Unknown";
+
   return (
  
 
@@ -71,7 +85,7 @@ const PostCard = ({ data }: PostCardProps) => {
                       height={30}
                       className="rounded-full w-7 h-7 object-cover"
                     />
-                    <p className="text-sm">{data?.author?.name || "Unknown"}</p>
+                    <p className="text-sm">{capitalizeName(data?.author?.name || "Unknown")}</p>
                   </div>
 
                   <div className="flex flex-col gap-3 lg:flex-row lg:justify-between ">
@@ -92,11 +106,11 @@ const PostCard = ({ data }: PostCardProps) => {
           </Link>
 
           <div className="flex justify-between text-sm items-center">
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-end">
               <button 
                 onClick={handleLike}
                 disabled={isLiking || !session?.user?.id}
-                className="cursor-pointer transition-colors duration-200 hover:text-red-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                className="cursor-pointer transition-colors duration-200 hover:text-zinc-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-end gap-1"
                 title={session?.user?.id ? "Like this post" : "Sign in to like"}
               >
                 <ThumbsUp 
@@ -107,13 +121,17 @@ const PostCard = ({ data }: PostCardProps) => {
                 <span className="text-xs">{likeCount}</span>
               </button>
 
-              <Link href={`/stories/${data.slug}`} className="cursor-pointer flex items-center gap-1 hover:text-blue-500 transition-colors">
+              <Link href={`/stories/${data.slug}`} className="cursor-pointer flex items-end gap-1 hover:text-zinc-500 transition-colors">
                     <MessageCircle strokeWidth={1} className="w-5" />
                     <span className="text-xs">{data._count?.comments ?? 0}</span>
               </Link>
 
+            <p className='text-xs text-gray-400'>{readTime} min read • {wordCount} words </p>
+
+
             </div>
-            <p className="text-xs text-zinc-500">
+
+            <p className="text-xs text-gray-400">
               {new Date(data?.publishedAt).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "short",
