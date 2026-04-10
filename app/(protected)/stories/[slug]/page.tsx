@@ -1,14 +1,23 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import ReadOnlyEditor from '@/components/tiptap-templates/simple/read-only-editor'
 import CommentsSection from '@/components/CommentsSection'
 import axios from '@/lib/axios'
+import { useAuthStore } from '@/store/auth.store'
 
 const page = () => {
   const params = useParams()
+  const router = useRouter()
   const slug = params.slug as string
+  const { session } = useAuthStore()
+
+  useEffect(() => {
+    if (!session) {
+      router.push(`/stories/${slug}`)
+    }
+  }, [session, router])
 
   const { data, isPending, isError } = useQuery({
     queryKey: ['story', slug],

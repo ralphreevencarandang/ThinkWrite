@@ -30,18 +30,23 @@ export const metadata: Metadata = {
 
 
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const session = await auth.api.getSession({
+    headers: headersList,
+  });
+
   return (
     <html lang="en">
       <body
         className={` ${poppins.className} antialiased bg-dirty text-zinc-700 font-normal`}
       >
 
-            <Providers>
+            <Providers session={session}>
               {children}
             </Providers>
             <Toaster containerClassName="text-xs"/>
