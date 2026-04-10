@@ -6,13 +6,16 @@ import PostCard from '@/components/ui/PostCard'
 import { Loader } from '@/components/ui/Loader'
 import { Heart } from 'lucide-react'
 import axios from '@/lib/axios'
-
 import { PostData } from '@/components/ui/PostCard'
+import { useAuthRedirect } from '@/hooks/use-auth-redirect'
 
 const POSTS_PER_PAGE = 10
 
 const LikedPostsPage = () => {
   const sentinelRef = useRef<HTMLDivElement>(null)
+
+  // Use the safe auth redirect hook
+  useAuthRedirect()
 
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage, error } = useInfiniteQuery({
     queryKey: ['liked-posts'],

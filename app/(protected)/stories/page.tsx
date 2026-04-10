@@ -3,8 +3,12 @@
 import React, { useState } from 'react'
 import DraftStories from '@/components/ui/DraftStories'
 import PublishedStories from '@/components/ui/PublishedStories'
+import { useAuthRedirect } from '@/hooks/use-auth-redirect'
 
 const page = () => {
+  // Use the safe auth redirect hook
+  useAuthRedirect()
+
   const [activeTab, setActiveTab] = useState<'drafts' | 'published'>('drafts')
 
   return (

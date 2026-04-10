@@ -1,6 +1,6 @@
     'use client'; // This must be a client component
 
-    import { useEffect } from 'react';
+    import { useLayoutEffect } from 'react';
     import { useAuthStore } from '@/store/auth.store' // Adjust path as needed
     import { Session } from '@/types';
 
@@ -13,8 +13,10 @@
     }) {
     const setSession = useAuthStore((state) => state.setSession);
 
-    // When this component loads, or if session changes, update the store
-    useEffect(() => {
+    // Use useLayoutEffect to set session synchronously before child components render
+    // This prevents timing issues where components check session before it's set
+    useLayoutEffect(() => {
+        console.log('SessionProvider: Setting session immediately', session);
         setSession(session);
     }, [session, setSession]);
 

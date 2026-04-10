@@ -19,7 +19,7 @@ const PublicNavbar = () => {
 
             <nav>
                 <ul className='flex items-center space-x-4'>
-                    <li className='hidden sm:block'><Link href={''}>Browse</Link></li>
+                    
                     <li className='hidden sm:block'><Link href={''}>About Us</Link></li>
                     <li className='hidden sm:block' onClick={()=> setIsSignin(true)}><AuthModal label='Sign in' btnClass='cursor-pointer'/></li>
                     <li onClick={()=> setIsSignin(false)}><AuthModal label='Get started' btnClass='bg-black text-white px-2 py-1 rounded cursor-pointer hover:bg-stone-950'/></li>

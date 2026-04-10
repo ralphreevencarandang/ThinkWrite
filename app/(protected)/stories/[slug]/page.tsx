@@ -1,23 +1,18 @@
 'use client'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import ReadOnlyEditor from '@/components/tiptap-templates/simple/read-only-editor'
 import CommentsSection from '@/components/CommentsSection'
 import axios from '@/lib/axios'
-import { useAuthStore } from '@/store/auth.store'
+import { useAuthRedirect } from '@/hooks/use-auth-redirect'
 
 const page = () => {
   const params = useParams()
-  const router = useRouter()
   const slug = params.slug as string
-  const { session } = useAuthStore()
-
-  useEffect(() => {
-    if (!session) {
-      router.push(`/stories/${slug}`)
-    }
-  }, [session, router])
+  
+  // Use the safe auth redirect hook
+  useAuthRedirect()
 
   const { data, isPending, isError } = useQuery({
     queryKey: ['story', slug],

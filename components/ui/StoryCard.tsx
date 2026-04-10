@@ -5,7 +5,7 @@ import { Ellipsis, Trash2, Edit } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from '@/lib/axios'
 import { deletePost } from '@/lib/actions/post-actions'
 import toast from 'react-hot-toast'
@@ -30,6 +30,7 @@ const StoryCard = ({ id, slug, title, excerpt, featuredImage, createdAt, content
   const menuRef = useRef<HTMLDivElement>(null)
 
   const router = useRouter()
+  const queryClient = useQueryClient()
   
   const wordCount = content.split(/\s+/).length
   const readTime = Math.ceil(wordCount / 200) // 200 words per minute
@@ -46,7 +47,10 @@ const StoryCard = ({ id, slug, title, excerpt, featuredImage, createdAt, content
       if (response.success) {
         console.log('Post deleted successfully:', response.message)
         setIsMenuOpen(false)
-        router.refresh() // Refresh the page to reflect changes
+        
+        // Invalidate the posts queries to refetch both drafts and published
+        queryClient.invalidateQueries({ queryKey: ['posts'] })
+        
         toast.success('Story deleted successfully!')
       } else {
         console.error('Delete failed:', response.message)
@@ -54,6 +58,7 @@ const StoryCard = ({ id, slug, title, excerpt, featuredImage, createdAt, content
     },
     onError: (error) => {
       console.error('Error deleting post:', error)
+      toast.error('Failed to delete story')
     }
   })
 
