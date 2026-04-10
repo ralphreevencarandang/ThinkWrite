@@ -8,7 +8,7 @@ import { likePost } from "@/lib/actions/post-actions";
 import { useLikePost } from "@/lib/react-queries/posts.query";
 // import { toast } from "sonner";
 import toast from "react-hot-toast";
-interface PostData {
+export interface PostData {
   id: string;
   title: string;
   excerpt: string;
@@ -94,7 +94,7 @@ const PostCard = ({ data }: PostCardProps) => {
                         src={data?.featuredImage || postPlaceholder}
                         alt="post-image"
                         fill
-                        className="object-cover rounded"
+                        className="object-cover  rounded"
                       />
                     </div>
 
