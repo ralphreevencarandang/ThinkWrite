@@ -56,9 +56,11 @@ const PostCard = ({ data }: PostCardProps) => {
       return;
     }
 
+    console.log('Liked!');
+    
     toggleLike({
       postId: data.id,
-      userId: session.user.id,
+      userId: session?.user.id,
     });
   };
 

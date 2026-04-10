@@ -98,73 +98,97 @@ export const useLikePost = () => {
         mutationFn: ({ postId, userId }: LikePostInput) =>
             likePost(postId, userId),
         onMutate: async ({ postId, userId }) => {
-            // Cancel outgoing refetches so they don't overwrite our optimistic update
+            // Cancel outgoing refetches
             await queryClient.cancelQueries({ queryKey: ['all-posts'] })
             await queryClient.cancelQueries({ queryKey: ['liked-posts'] })
 
-            // Snapshot the previous values
-            const previousAllPosts = queryClient.getQueryData(['all-posts']) as any[]
-            const previousLikedPosts = queryClient.getQueryData(['liked-posts']) as any[]
+            // Get previous data - need to handle infinite query structure
+            const previousAllPostsData = queryClient.getQueryData(['all-posts']) as any
+            const previousLikedPostsData = queryClient.getQueryData(['liked-posts']) as any
 
-            // Optimistically update all-posts
-            if (previousAllPosts) {
-                queryClient.setQueryData(['all-posts'], (old: any[]) => {
-                    return old.map((post: any) => {
-                        if (post.id === postId) {
-                            return {
-                                ...post,
-                                isLikedByCurrentUser: !post.isLikedByCurrentUser,
-                                _count: {
-                                    ...post._count,
-                                    likes: post.isLikedByCurrentUser
-                                        ? (post._count?.likes || 1) - 1
-                                        : (post._count?.likes || 0) + 1,
-                                },
+            // Update all-posts (infinite query)
+            if (previousAllPostsData?.pages) {
+                queryClient.setQueryData(['all-posts'], (old: any) => ({
+                    ...old,
+                    pages: old.pages.map((page: any) => ({
+                        ...page,
+                        posts: page.posts.map((post: any) => {
+                            if (post.id === postId) {
+                                return {
+                                    ...post,
+                                    isLikedByCurrentUser: !post.isLikedByCurrentUser,
+                                    _count: {
+                                        ...post._count,
+                                        likes: post.isLikedByCurrentUser
+                                            ? (post._count?.likes || 1) - 1
+                                            : (post._count?.likes || 0) + 1,
+                                    },
+                                }
                             }
-                        }
-                        return post
-                    })
-                })
+                            return post
+                        })
+                    }))
+                }))
             }
 
-            // Optimistically update liked-posts
-            if (previousLikedPosts) {
-                queryClient.setQueryData(['liked-posts'], (old: any[]) => {
-                    const wasLiked = old.some((post: any) => post.id === postId)
+            // Update liked-posts (infinite query)
+            if (previousLikedPostsData?.pages) {
+                queryClient.setQueryData(['liked-posts'], (old: any) => {
+                    const wasLiked = old.pages.some((page: any) =>
+                        page.posts.some((post: any) => post.id === postId)
+                    )
+
                     if (wasLiked) {
                         // Remove from liked posts if user is unliking
-                        return old.filter((post: any) => post.id !== postId)
+                        return {
+                            ...old,
+                            pages: old.pages.map((page: any) => ({
+                                ...page,
+                                posts: page.posts.filter((post: any) => post.id !== postId)
+                            }))
+                        }
                     } else {
-                        // Add to liked posts if user is liking (find the post from all-posts)
-                        const likedPost = previousAllPosts?.find((p: any) => p.id === postId)
+                        // Add to liked posts if user is liking
+                        const likedPost = previousAllPostsData?.pages
+                            ?.flatMap((p: any) => p.posts)
+                            .find((p: any) => p.id === postId)
+
                         if (likedPost) {
-                            return [
-                                {
-                                    ...likedPost,
-                                    isLikedByCurrentUser: true,
-                                },
-                                ...old
-                            ]
+                            return {
+                                ...old,
+                                pages: [
+                                    {
+                                        ...old.pages[0],
+                                        posts: [
+                                            {
+                                                ...likedPost,
+                                                isLikedByCurrentUser: true,
+                                            },
+                                            ...old.pages[0].posts
+                                        ]
+                                    },
+                                    ...old.pages.slice(1)
+                                ]
+                            }
                         }
                     }
                     return old
                 })
             }
 
-            // Return a context object with the snapshotted values
-            return { previousAllPosts, previousLikedPosts }
+            return { previousAllPostsData, previousLikedPostsData }
         },
         onError: (err, variables, context) => {
-            // Rollback to the previous values on error
-            if (context?.previousAllPosts) {
-                queryClient.setQueryData(['all-posts'], context.previousAllPosts)
+            // Rollback on error
+            if (context?.previousAllPostsData) {
+                queryClient.setQueryData(['all-posts'], context.previousAllPostsData)
             }
-            if (context?.previousLikedPosts) {
-                queryClient.setQueryData(['liked-posts'], context.previousLikedPosts)
+            if (context?.previousLikedPostsData) {
+                queryClient.setQueryData(['liked-posts'], context.previousLikedPostsData)
             }
         },
         onSuccess: () => {
-            // Refetch to ensure consistency with the server
+            // Refetch to ensure consistency
             queryClient.invalidateQueries({ queryKey: ['all-posts'] })
             queryClient.invalidateQueries({ queryKey: ['liked-posts'] })
         },

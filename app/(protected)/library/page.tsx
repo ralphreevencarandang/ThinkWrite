@@ -1,35 +1,89 @@
 'use client'
 
-import React from 'react'
-import { useGetLikedPosts } from '@/lib/react-queries/posts.query'
+import React, { useRef, useEffect } from 'react'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import PostCard from '@/components/ui/PostCard'
 import { Loader } from '@/components/ui/Loader'
 import { Heart } from 'lucide-react'
+import axios from '@/lib/axios'
 
 import { PostData } from '@/components/ui/PostCard'
+
+const POSTS_PER_PAGE = 10
+
 const LikedPostsPage = () => {
-  const { data: likedPosts, isLoading, error } = useGetLikedPosts()
+  const sentinelRef = useRef<HTMLDivElement>(null)
+
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage, error } = useInfiniteQuery({
+    queryKey: ['liked-posts'],
+    queryFn: async ({ pageParam = 0 }) => {
+      try {
+        const res = await axios.get(`/posts/liked?page=${pageParam}&limit=${POSTS_PER_PAGE}`)
+        return {
+          posts: res.data.posts,
+          page: pageParam,
+          hasMore: res.data.posts.length === POSTS_PER_PAGE
+        }
+      } catch (error) {
+        console.log('Error fetching liked posts: ', error)
+        throw error
+      }
+    },
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasMore ? lastPage.page + 1 : undefined
+    },
+    initialPageParam: 0
+  })
+
+  // Intersection Observer for infinite scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (sentinelRef.current) {
+      observer.observe(sentinelRef.current)
+    }
+
+    return () => {
+      if (sentinelRef.current) {
+        observer.unobserve(sentinelRef.current)
+      }
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
+
+  const likedPosts = data?.pages.flatMap(page => page.posts) || []
 
   return (
     <div className='max-w-3xl mx-auto'>
       <div className='mb-8'>
-        <div className='flex items-center gap-3 mb-2'>
-          <Heart className='w-8 h-8 fill-red-500 text-red-500' />
-          <h1 className='text-3xl font-bold'>Liked Posts</h1>
-        </div>
-        <p className='text-gray-500'>Posts you found inspiring or useful</p>
+        
+        <h1 className='text-black font-semibold text-2xl '>Posts you found inspiring or useful</h1>
       </div>
 
       {isLoading && <Loader />}
 
       {!isLoading && likedPosts && likedPosts.length > 0 && (
         <div>
-          <p className='text-sm text-gray-500 mb-4'>{likedPosts.length} post{likedPosts.length !== 1 ? 's' : ''} liked</p>
           <div className='space-y-0'>
             {likedPosts.map((post: PostData) => (
               <PostCard key={post.id} data={post} />
             ))}
           </div>
+
+          {/* Sentinel element for infinite scroll trigger */}
+          <div ref={sentinelRef} className='h-10' />
+
+          {isFetchingNextPage && (
+            <div className='flex justify-center py-8'>
+              <Loader />
+            </div>
+          )}
         </div>
       )}
 
